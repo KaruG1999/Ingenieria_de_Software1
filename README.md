@@ -45,3 +45,44 @@ A medida que avance la cursada, se irán incorporando:
 - **Sistemas de Información**
   - Teoría General de Sistemas
   - Privacidad, integridad y seguridad de la información
+
+# Exámenes
+
+## Cronograma Práctica
+
+| Fecha             | Evaluación               | Temas                                                                            |
+| ----------------- | ------------------------ | -------------------------------------------------------------------------------- |
+| **Sábado 4/10**   | **Parcial Práctica**     | **HU (Historias de Usuario) - CU (Casos de Uso)**                                |
+| **Sábado 1/11**   | **Parcial Práctica**     | **DTE (Diagramas de Transición de Estados) - RP (Responsabilidades y Patrones)** |
+| **Viernes 28/11** | **Recuperatorio Global** | Todos los temas de práctica                                                      |
+| **Viernes 19/12** | **Recuperatorio Global** | Todos los temas de práctica                                                      |
+
+## Cronograma Teoría
+
+| Fecha     | Evaluación                         | Observaciones |
+| --------- | ---------------------------------- | ------------- |
+| **01/12** | **Examen de Teoría**               | -             |
+| **05/02** | **Recuperatorio Examen de Teoría** | A confirmar   |
+
+---
+
+## Notas importantes:
+
+- **Primer parcial práctico**: Se enfoca en los fundamentos del análisis de requerimientos
+- **Segundo parcial práctico**: Abarca temas más avanzados de diseño y arquitectura
+- **Recuperatorios**: Permiten recuperar cualquier parcial o rendir global
+- **Teoría**: Evaluación separada con su propio recuperatorio
+
+## Preparación sugerida:
+
+### Para el 4/10 (HU-CU):
+
+- Historias de Usuario completas con criterios de aceptación
+- Casos de Uso con flujo principal y alternativos
+- Identificación correcta de roles y funcionalidades
+
+### Para el 1/11 (DTE-RP):
+
+- Diagramas de Estados y transiciones
+- Asignación de responsabilidades
+- Aplicación de patrones de diseño
