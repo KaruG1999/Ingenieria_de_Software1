@@ -1,12 +1,11 @@
-# Resolución Práctica - Historias de Usuario
+# Historias de Usuario - Versión Corregida teniendo en cuenta comentarios en clase práctica
 
 ## Problema 1: Alquiler de mobiliario
 
 ### Roles identificados:
+
 - **Encargado de mobiliario**
 - **Cliente**
-
-### Historias de Usuario:
 
 ---
 
@@ -14,29 +13,24 @@
 
 **ID:** Dar alta mobiliario
 
-**TÍTULO:** Como encargado de mobiliario quiero dar de alta un mueble para poder incluirlo en el inventario disponible para alquiler.
+**TÍTULO:** Como encargado de mobiliario quiero dar de alta un mueble para incluirlo en el inventario disponible.
 
 **REGLAS DE NEGOCIO:**
-- No pueden existir códigos de inventario repetidos
-- El precio debe cargarse en dólares (política de franquicia)
-- El encargado debe autenticarse para dar de alta mobiliario
+
+- No pueden existir códigos repetidos
+- Para que el encargado pueda dar de alta el mobiliario debe autenticarse en el sistema
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Alta exitosa de mobiliario
-**Dado** que el encargado está autenticado y el código de inventario "MOB001" no existe en el sistema,
-**Cuando** ingresa código "MOB001", tipo "Silla", fecha creación "01/01/2024", fecha último mantenimiento "15/01/2024", estado "libre" y precio "$50" y presiona "Dar de alta",
-**Entonces** el sistema registra el mueble y confirma "Mobiliario registrado exitosamente".
+**Dado** que el encargado está autenticado y el código "MOB001" no existe,
+**Cuando** ingresa código "MOB001", tipo "Silla", fecha creación "01/01/2024", fecha último mantenimiento "15/01/2024", estado "libre", precio "$50" y confirma el alta,
+**Entonces** el sistema registra el mueble en el inventario.
 
 **Escenario 2:** Alta fallida por código repetido
-**Dado** que el encargado está autenticado y el código de inventario "MOB001" ya existe en el sistema,
+**Dado** que el encargado está autenticado y el código "MOB001" ya existe,
 **Cuando** intenta dar de alta un mueble con código "MOB001",
-**Entonces** el sistema informa "El código de inventario ya existe, ingrese uno diferente".
-
-**Escenario 3:** Alta fallida por falta de autenticación
-**Dado** que el encargado no está autenticado en el sistema,
-**Cuando** intenta acceder a la función de alta de mobiliario,
-**Entonces** el sistema solicita autenticación antes de continuar.
+**Entonces** el sistema rechaza el alta por código duplicado.
 
 ---
 
@@ -44,293 +38,159 @@
 
 **ID:** Realizar reserva alquiler
 
-**TÍTULO:** Como cliente quiero realizar una reserva de alquiler para poder asegurar el mobiliario para mi evento.
+**TÍTULO:** Como cliente quiero realizar una reserva de alquiler para asegurar mobiliario para mi evento.
 
 **REGLAS DE NEGOCIO:**
-- Una reserva debe incluir mínimo 3 muebles
-- Se debe abonar el 20% del total del alquiler
-- Solo se acepta pago con tarjeta de crédito
-- Se valida número de tarjeta y fondos a través del servicio del banco
+
+- Por una política comercial de la marca una reserva tiene que incluir como mínimo 3 muebles
+- Para realizar una reserva se debe abonar el 20% del total del alquiler
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Reserva exitosa
-**Dado** que hay mobiliario disponible y las condiciones son adecuadas para el pago,
-**Cuando** el cliente selecciona 5 muebles, ingresa fecha "15/03/2024", lugar "Salón Central", cantidad de días "2" y realiza el pago del 20% con tarjeta válida,
-**Entonces** el sistema procesa el pago, genera un número de reserva único y confirma "Reserva realizada exitosamente. Su número de reserva es: R123456".
+**Dado** que hay mobiliario disponible y las condiciones son adecuadas para un pago exitoso,
+**Cuando** el cliente selecciona 5 muebles, ingresa fecha "15/03/2024", lugar "Salón Central", cantidad de días "2" y procede al pago,
+**Entonces** el sistema procesa el pago del 20%, emite número de reserva único "R123456" y confirma la reserva.
 
 **Escenario 2:** Reserva fallida por cantidad insuficiente de muebles
 **Dado** que el cliente selecciona solo 2 muebles,
 **Cuando** intenta realizar la reserva,
-**Entonces** el sistema informa "Debe seleccionar al menos 3 muebles para realizar la reserva".
+**Entonces** el sistema rechaza la reserva por no cumplir el mínimo de 3 muebles.
 
-**Escenario 3:** Reserva fallida por error en el pago
-**Dado** que el cliente selecciona 4 muebles pero la tarjeta no tiene fondos suficientes,
+**Escenario 3:** Reserva fallida por error en pago
+**Dado** que el cliente selecciona 4 muebles pero las condiciones no son adecuadas para un pago exitoso,
 **Cuando** intenta realizar el pago del 20%,
-**Entonces** el sistema informa "Error en el pago. Verifique los datos de su tarjeta y fondos disponibles".
+**Entonces** el sistema rechaza la reserva por fallo en el pago.
 
 ---
 
-#### Historia 3: Pagar con tarjeta
+#### Historia 3: Pagar con tarjeta de crédito
 
 **ID:** Pagar tarjeta
 
-**TÍTULO:** Como cliente quiero pagar con tarjeta de crédito para completar mi reserva de alquiler.
+**TÍTULO:** Como cliente quiero pagar con tarjeta de crédito para completar mi reserva.
 
 **REGLAS DE NEGOCIO:**
-- Se valida número de tarjeta y fondos a través del servicio del banco
-- Solo se acepta tarjeta de crédito
+
+- El pago de la reserva se realiza únicamente con tarjeta de crédito validando número de tarjeta y fondos a través de un servicio del banco
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Pago exitoso
-**Dado** que la conexión con el banco es exitosa, la tarjeta "1234-5678-9012-3456" es válida y tiene fondos suficientes,
-**Cuando** el cliente ingresa los datos de la tarjeta y presiona "Pagar",
+**Dado** que la tarjeta "1234-5678-9012-3456" es válida y tiene fondos suficientes según el servicio del banco,
+**Cuando** el cliente ingresa los datos de la tarjeta y confirma el pago,
 **Entonces** el sistema valida con el banco, procesa el pago y retorna confirmación exitosa.
 
 **Escenario 2:** Pago fallido por tarjeta inválida
-**Dado** que la conexión con el banco es exitosa pero la tarjeta ingresada no es válida,
+**Dado** que la tarjeta ingresada no es válida según el servicio del banco,
 **Cuando** el cliente intenta realizar el pago,
-**Entonces** el sistema retorna "Tarjeta de crédito no válida".
+**Entonces** el sistema retorna error de validación de tarjeta.
 
 **Escenario 3:** Pago fallido por fondos insuficientes
-**Dado** que la tarjeta es válida pero no tiene fondos suficientes,
+**Dado** que la tarjeta es válida pero no tiene fondos suficientes según el servicio del banco,
 **Cuando** el cliente intenta realizar el pago,
-**Entonces** el sistema retorna "Fondos insuficientes en la tarjeta".
+**Entonces** el sistema retorna error por fondos insuficientes.
 
 ---
 
-## Problema 2: Posgrado
+## Problema 2: Cadena hotelera
 
 ### Roles identificados:
-- **Empleado administrativo**
-- **Alumno**
 
-### Historias de Usuario:
+- **Usuario**
+- **Conserje**
 
 ---
 
-#### Historia 1: Cargar carreras
+#### Historia 1: Reservar hospedaje
 
-**ID:** Cargar carreras
+**ID:** Reservar hospedaje
 
-**TÍTULO:** Como empleado administrativo quiero cargar carreras de posgrado para que estén disponibles para inscripción.
+**TÍTULO:** Como usuario quiero reservar un hospedaje para asegurar mi estadía.
 
 **REGLAS DE NEGOCIO:**
-- El nombre de la carrera no puede repetirse
-- La duración máxima es de 5 años
-- Se requiere: nombre, duración en años, costo y cantidad máxima de cuotas
+
+- La fecha de ingreso debe estar dentro de los 90 días a partir de la fecha actual
+- Las estadías no pueden durar más de 15 días
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Carga exitosa de carrera
-**Dado** que el nombre "Maestría en Informática" no existe en el sistema,
-**Cuando** el empleado ingresa nombre "Maestría en Informática", duración "2 años", costo "$50000" y cantidad máxima de cuotas "12" y presiona "Cargar",
-**Entonces** el sistema registra la carrera y confirma "Carrera cargada exitosamente".
+**Escenario 1:** Reserva exitosa
+**Dado** que la fecha de ingreso "15/03/2024" está dentro de 90 días y la estadía es de 10 días,
+**Cuando** ingresa fecha ingreso, fecha egreso "25/03/2024", hotel "Plaza Central", cantidad personas "2" y confirma,
+**Entonces** el sistema realiza la reserva y envía correo electrónico con código de reserva y enlace para continuar con el pago.
 
-**Escenario 2:** Carga fallida por nombre repetido
-**Dado** que la carrera "Maestría en Informática" ya existe en el sistema,
-**Cuando** el empleado intenta cargar una carrera con el mismo nombre,
-**Entonces** el sistema informa "Ya existe una carrera con ese nombre".
+**Escenario 2:** Reserva fallida por fecha fuera de rango
+**Dado** que la fecha de ingreso está a más de 90 días de la fecha actual,
+**Cuando** intenta hacer la reserva,
+**Entonces** el sistema rechaza la reserva por fecha fuera del rango permitido.
 
-**Escenario 3:** Carga fallida por duración excesiva
-**Dado** que el empleado ingresa una duración de 6 años,
-**Cuando** intenta cargar la carrera,
-**Entonces** el sistema informa "La duración máxima permitida es de 5 años".
+**Escenario 3:** Reserva fallida por estadía excesiva
+**Dado** que la estadía solicitada supera los 15 días,
+**Cuando** intenta reservar,
+**Entonces** el sistema rechaza la reserva por exceder el máximo de días permitidos.
 
 ---
 
-#### Historia 2: Registrar alumno
+#### Historia 2: Realizar check in
 
-**ID:** Registrar alumno
+**ID:** Realizar check in
 
-**TÍTULO:** Como alumno quiero registrarme en el sistema para poder inscribirme a carreras de posgrado.
+**TÍTULO:** Como usuario quiero hacer check in para acceder a mi habitación.
 
 **REGLAS DE NEGOCIO:**
-- Se requiere: nombre, apellido, nombre de usuario (único) y contraseña (más de 6 dígitos)
-- El nombre de usuario debe ser único
+
+- Los check in pueden realizarse después de las 10 am y hasta las 23:59 pm
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Registro exitoso
-**Dado** que el nombre de usuario "juan_perez" no existe en el sistema,
-**Cuando** el alumno ingresa nombre "Juan", apellido "Pérez", usuario "juan_perez" y contraseña "123456789" y presiona "Registrarse",
-**Entonces** el sistema registra al alumno y confirma "Registro exitoso".
+**Escenario 1:** Check in exitoso
+**Dado** que son las 14:00 pm y el código "RES123456" tiene reserva para la fecha actual,
+**Cuando** ingresa el código en la terminal,
+**Entonces** el sistema informa habitación asignada "205", manda mensaje a conserje para guiar al usuario y mensaje a botones para las valijas.
 
-**Escenario 2:** Registro fallido por nombre de usuario repetido
-**Dado** que el nombre de usuario "juan_perez" ya existe,
-**Cuando** un alumno intenta registrarse con ese mismo usuario,
-**Entonces** el sistema informa "El nombre de usuario ya existe, elija otro".
+**Escenario 2:** Check in fallido por código inválido
+**Dado** que el código ingresado no tiene reserva para la fecha actual,
+**Cuando** intenta hacer check in,
+**Entonces** el sistema informa que el código no es válido.
 
-**Escenario 3:** Registro fallido por contraseña corta
-**Dado** que el alumno ingresa una contraseña de 5 dígitos,
-**Cuando** intenta registrarse,
-**Entonces** el sistema informa "La contraseña debe tener más de 6 dígitos".
+**Escenario 3:** Check in fallido por horario no permitido
+**Dado** que son las 8:00 am (antes de las 10:00 am),
+**Cuando** intenta realizar check in,
+**Entonces** el sistema informa que aún no se encuentran habilitados los ingresos al hotel.
 
 ---
 
-#### Historia 3: Inscribir alumno a carrera
+#### Historia 3: Realizar check out
 
-**ID:** Inscribir carrera
+**ID:** Realizar check out
 
-**TÍTULO:** Como alumno quiero inscribirme a una carrera de posgrado para poder cursarla.
+**TÍTULO:** Como conserje quiero realizar el check out para liberar la habitación.
 
 **REGLAS DE NEGOCIO:**
-- El alumno debe estar registrado y haber iniciado sesión
-- Se debe abonar al momento de la inscripción
-- Solo se acepta pago con tarjeta de crédito
-- La tarjeta se valida a través del servicio del banco
+
+- Solo se puede realizar check out de habitaciones sin gastos
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Inscripción exitosa
-**Dado** que el alumno está autenticado, selecciona "Maestría en Informática", elige 6 cuotas, ingresa tarjeta válida con fondos,
-**Cuando** presiona "Inscribirse",
-**Entonces** el sistema procesa el pago, confirma la inscripción e imprime los comprobantes de inscripción y pago.
+**Escenario 1:** Check out exitoso
+**Dado** que la habitación "205" no tiene gastos pendientes,
+**Cuando** ingresa número de habitación "205" y confirma check out,
+**Entonces** el sistema libera la habitación y envía mensaje a las mucamas avisando que puede limpiarse.
 
-**Escenario 2:** Inscripción fallida por alumno no autenticado
-**Dado** que el alumno no ha iniciado sesión,
-**Cuando** intenta acceder a la inscripción,
-**Entonces** el sistema solicita iniciar sesión primero.
-
-**Escenario 3:** Inscripción fallida por error en el pago
-**Dado** que el alumno está autenticado pero la tarjeta no tiene fondos,
-**Cuando** intenta realizar el pago,
-**Entonces** el sistema informa "Error en el pago. Verifique los datos de su tarjeta".
+**Escenario 2:** Check out fallido por gastos pendientes
+**Dado** que la habitación "205" tiene gastos sin abonar,
+**Cuando** intenta hacer check out,
+**Entonces** el sistema informa que no puede hacerse hasta que no se abonen los gastos realizados.
 
 ---
 
-## Problema 3: Contratos
+## Problema 3: Venta de bebidas
 
 ### Roles identificados:
-- **Empleado de mesa de entradas**
-- **Empleado de rendiciones**
-- **Jefe de departamento**
 
-### Historias de Usuario:
-
----
-
-#### Historia 1: Confeccionar minuta
-
-**ID:** Confeccionar minuta
-
-**TÍTULO:** Como empleado de mesa de entradas quiero confeccionar una minuta para iniciar el proceso de contratación.
-
-**REGLAS DE NEGOCIO:**
-- Los montos no pueden superar $25.000
-- La duración debe ser máximo 6 meses
-- El sistema asocia automáticamente un número de minuta
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Minuta confeccionada exitosamente
-**Dado** que los datos ingresados cumplen las reglas de negocio,
-**Cuando** el empleado ingresa nombre "Juan Pérez", CUIT "20-12345678-9", tipo "Servicios profesionales", fecha inicio "01/03/2024", duración "3 meses" y monto "$20000" y presiona "Confeccionar",
-**Entonces** el sistema genera automáticamente el número de minuta "MIN001" y confirma "Minuta confeccionada exitosamente".
-
-**Escenario 2:** Minuta rechazada por monto excesivo
-**Dado** que el empleado ingresa un monto de $30000,
-**Cuando** intenta confeccionar la minuta,
-**Entonces** el sistema informa "El monto no puede superar los $25.000".
-
-**Escenario 3:** Minuta rechazada por duración excesiva
-**Dado** que el empleado ingresa una duración de 8 meses,
-**Cuando** intenta confeccionar la minuta,
-**Entonces** el sistema informa "La duración máxima permitida es de 6 meses".
-
----
-
-#### Historia 2: Aprobar minuta
-
-**ID:** Aprobar minuta
-
-**TÍTULO:** Como empleado de rendiciones quiero aprobar una minuta para que pueda convertirse en contrato.
-
-**REGLAS DE NEGOCIO:**
-- No se puede aprobar si la persona tiene 3 contratos vigentes
-- No se puede aprobar si el CUIT está inhabilitado por AFIP
-- Se verifica el estado del CUIT a través del servicio de AFIP
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Aprobación exitosa
-**Dado** que la minuta "MIN001" existe, la persona no tiene 3 contratos vigentes y el CUIT está habilitado por AFIP,
-**Cuando** el empleado ingresa "MIN001" y presiona "Aprobar",
-**Entonces** el sistema muestra los datos de la minuta, verifica con AFIP y confirma "Minuta aprobada exitosamente".
-
-**Escenario 2:** Aprobación rechazada por contratos vigentes
-**Dado** que la persona ya tiene 3 contratos vigentes,
-**Cuando** se intenta aprobar la minuta,
-**Entonces** el sistema informa "No se puede aprobar. La persona ya tiene 3 contratos vigentes".
-
-**Escenario 3:** Aprobación rechazada por CUIT inhabilitado
-**Dado** que el CUIT está inhabilitado según AFIP,
-**Cuando** se verifica el estado con AFIP,
-**Entonces** el sistema informa "No se puede aprobar. El CUIT está inhabilitado por AFIP".
-
----
-
-#### Historia 3: Verificar CUIT con AFIP
-
-**ID:** Verificar CUIT
-
-**TÍTULO:** Como sistema quiero verificar el estado de un CUIT con AFIP para validar la aprobación de minutas.
-
-**REGLAS DE NEGOCIO:**
-- Se debe enviar token de identificación y CUIT
-- AFIP responde si el CUIT está habilitado o no
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Verificación exitosa - CUIT habilitado
-**Dado** que el token es válido y el CUIT "20-12345678-9" está habilitado,
-**Cuando** el sistema envía token y CUIT a AFIP,
-**Entonces** AFIP responde "CUIT habilitado" y el sistema permite continuar el proceso.
-
-**Escenario 2:** Verificación exitosa - CUIT inhabilitado
-**Dado** que el token es válido pero el CUIT está inhabilitado,
-**Cuando** el sistema consulta a AFIP,
-**Entonces** AFIP responde "CUIT inhabilitado" y el sistema rechaza la operación.
-
-**Escenario 3:** Verificación fallida por token inválido
-**Dado** que el token enviado no es válido,
-**Cuando** el sistema intenta conectarse con AFIP,
-**Entonces** AFIP rechaza la conexión por token inválido.
-
----
-
-#### Historia 4: Imprimir listado de minutas aprobadas
-
-**ID:** Imprimir listado minutas
-
-**TÍTULO:** Como empleado de rendiciones quiero imprimir un listado de minutas aprobadas para enviarlo al jefe de departamento.
-
-**REGLAS DE NEGOCIO:**
-- Solo se incluyen minutas aprobadas
-- El listado es para que el jefe de departamento lo firme y eleve al decano
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Impresión exitosa con minutas aprobadas
-**Dado** que existen minutas aprobadas en el sistema,
-**Cuando** el empleado solicita imprimir el listado,
-**Entonces** el sistema genera e imprime el listado con todas las minutas aprobadas.
-
-**Escenario 2:** Listado vacío
-**Dado** que no hay minutas aprobadas en el sistema,
-**Cuando** el empleado solicita el listado,
-**Entonces** el sistema informa "No hay minutas aprobadas para imprimir".
-
----
-
-## Problema 4: Venta de bebidas
-
-### Roles identificados:
-- **Persona** (visitante)
-- **Usuario** (registrado/premium)
-
-### Historias de Usuario:
+- **Persona**
+- **Usuario registrado/premium**
 
 ---
 
@@ -338,178 +198,69 @@
 
 **ID:** Registrar usuario
 
-**TÍTULO:** Como persona quiero registrarme en el sitio para poder comprar bebidas alcohólicas.
+**TÍTULO:** Como persona quiero registrarme para poder comprar bebidas alcohólicas.
 
 **REGLAS DE NEGOCIO:**
-- Solo se permite registro a personas mayores de 18 años
-- El mail debe ser único (será usado como nombre de usuario)
-- El sistema genera automáticamente la contraseña
+
+- Solo se permite que se registren al sitio personas mayores a 18 años
+- El mail será utilizado como nombre de usuario por lo tanto debe ser único
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Registro exitoso
-**Dado** que el mail "juan@email.com" no existe y la persona tiene 25 años,
-**Cuando** ingresa nombre "Juan", apellido "Pérez", mail "juan@email.com", edad "25" y presiona "Registrarse",
-**Entonces** el sistema genera una contraseña, la envía al mail y confirma "Registro exitoso. Contraseña enviada a su correo".
+**Dado** que la persona tiene 25 años y el mail "juan@email.com" no existe,
+**Cuando** completa el registro con datos válidos,
+**Entonces** el sistema genera contraseña y la envía al email ingresado.
 
 **Escenario 2:** Registro rechazado por menor de edad
-**Dado** que la persona ingresa edad "17 años",
+**Dado** que la persona tiene 17 años,
 **Cuando** intenta registrarse,
 **Entonces** el sistema muestra en pantalla el texto de la ley que impide la venta de bebidas alcohólicas a menores.
 
 **Escenario 3:** Registro rechazado por mail existente
-**Dado** que el mail "juan@email.com" ya existe en el sistema,
-**Cuando** se intenta registrar con ese mail,
-**Entonces** el sistema informa "El mail ingresado ya está registrado".
+**Dado** que el mail "juan@email.com" ya está registrado,
+**Cuando** intenta registrarse con ese mail,
+**Entonces** el sistema rechaza el registro por mail duplicado.
 
 ---
 
-#### Historia 2: Realizar compra
+#### Historia 2: Comprar bebidas
 
-**ID:** Realizar compra
+**ID:** Comprar bebidas
 
-**TÍTULO:** Como usuario quiero realizar una compra para adquirir bebidas alcohólicas.
+**TÍTULO:** Como usuario quiero comprar bebidas para adquirir productos alcohólicos.
 
 **REGLAS DE NEGOCIO:**
-- Usuario premium tiene 20% de descuento
-- Compras superiores a $4500 tienen 10% de descuento
-- Si es premium Y supera $4500, se aplican ambos descuentos
-- Debe estar logueado para comprar
+
+- Si el usuario es premium se le hace un descuento del 20%
+- Si el usuario seleccionó productos por un monto superior a los $4500 se le hace un 10% de descuento
+- Si el usuario es premium y compra por un monto superior a $4500 se deben aplicar ambos descuentos
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Compra exitosa usuario regular sin descuento
 **Dado** que el usuario está logueado, no es premium y selecciona productos por $3000,
-**Cuando** finaliza la selección y presiona "Comprar",
-**Entonces** el sistema muestra el total "$3000" y procede al pago.
+**Cuando** finaliza la selección,
+**Entonces** el sistema muestra total "$3000" sin descuentos aplicados.
 
 **Escenario 2:** Compra con descuento por monto superior a $4500
-**Dado** que el usuario no es premium pero selecciona productos por $5000,
+**Dado** que el usuario no es premium y selecciona productos por $5000,
 **Cuando** finaliza la compra,
-**Entonces** el sistema aplica 10% de descuento e informa "Total: $4500 (10% de descuento aplicado)".
+**Entonces** el sistema aplica 10% de descuento e informa en pantalla total "$4500" menos el 10%.
 
 **Escenario 3:** Compra usuario premium con ambos descuentos
 **Dado** que el usuario es premium y selecciona productos por $5000,
 **Cuando** finaliza la compra,
-**Entonces** el sistema aplica 20% + 10% de descuento e informa el total con ambos descuentos.
+**Entonces** el sistema aplica descuento del 20% por ser premium y 10% por monto superior a $4500.
 
 ---
 
-## Problema 5: Casa de fotografía
+## Problema 4: Biblioteca
 
 ### Roles identificados:
-- **Cliente**
-- **Empleado**
 
-### Historias de Usuario:
-
----
-
-#### Historia 1: Registrar cliente
-
-**ID:** Registrar cliente
-
-**TÍTULO:** Como cliente quiero registrarme para poder subir fotos e imprimirlas.
-
-**REGLAS DE NEGOCIO:**
-- Se requieren datos personales completos
-- Nombre de usuario debe ser único
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Registro exitoso
-**Dado** que el nombre de usuario "juan123" no existe,
-**Cuando** ingresa todos los datos requeridos con usuario "juan123" y presiona "Registrarse",
-**Entonces** el sistema registra al cliente y confirma "Registro exitoso".
-
-**Escenario 2:** Registro fallido por usuario existente
-**Dado** que el usuario "juan123" ya existe,
-**Cuando** se intenta registrar con ese usuario,
-**Entonces** el sistema informa "El nombre de usuario ya existe".
-
----
-
-#### Historia 2: Subir fotos
-
-**ID:** Subir fotos
-
-**TÍTULO:** Como cliente quiero subir mis fotos para poder imprimirlas.
-
-**REGLAS DE NEGOCIO:**
-- Máximo 50 fotos por pedido
-- Se suben de a una foto
-- Cliente debe estar autenticado
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Subida exitosa
-**Dado** que el cliente está autenticado y ha subido 30 fotos,
-**Cuando** sube una foto más,
-**Entonces** el sistema acepta la foto y muestra "Foto subida exitosamente. Total: 31 fotos".
-
-**Escenario 2:** Subida rechazada por límite alcanzado
-**Dado** que el cliente ya subió 50 fotos,
-**Cuando** intenta subir una foto más,
-**Entonces** el sistema informa "Ha alcanzado el límite máximo de 50 fotos".
-
----
-
-#### Historia 3: Pagar impresión
-
-**ID:** Pagar impresión
-
-**TÍTULO:** Como cliente quiero pagar la impresión de mis fotos para completar mi pedido.
-
-**REGLAS DE NEGOCIO:**
-- Cada foto cuesta $15
-- Se paga con tarjeta de crédito
-- La tarjeta se valida con el banco
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Pago exitoso
-**Dado** que el cliente subió 10 fotos y la tarjeta es válida con fondos,
-**Cuando** realiza el pago por $150,
-**Entonces** el sistema procesa el pago, lo confirma y genera un código único de retiro.
-
-**Escenario 2:** Pago rechazado por tarjeta inválida
-**Dado** que la tarjeta ingresada no es válida,
-**Cuando** se intenta procesar el pago,
-**Entonces** el sistema informa "Tarjeta inválida. Verifique los datos".
-
----
-
-#### Historia 4: Retirar fotos
-
-**ID:** Retirar fotos
-
-**TÍTULO:** Como empleado quiero registrar el retiro de fotos para completar el servicio al cliente.
-
-**REGLAS DE NEGOCIO:**
-- Se requiere código único válido
-- Se registra fecha de retiro
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Retiro exitoso
-**Dado** que el código "ABC123" es válido y corresponde a fotos pagadas,
-**Cuando** el empleado ingresa el código y confirma la entrega,
-**Entonces** el sistema registra la fecha de retiro y confirma "Fotos entregadas exitosamente".
-
-**Escenario 2:** Retiro rechazado por código inválido
-**Dado** que el código ingresado no existe,
-**Cuando** se intenta registrar el retiro,
-**Entonces** el sistema informa "Código inválido".
-
----
-
-## Problema 6: Biblioteca
-
-### Roles identificados:
 - **Bibliotecaria**
 - **Alumno/Socio**
-
-### Historias de Usuario:
 
 ---
 
@@ -520,15 +271,15 @@
 **TÍTULO:** Como bibliotecaria quiero asociar un alumno para que pueda solicitar préstamos.
 
 **REGLAS DE NEGOCIO:**
-- Se requiere DNI y certificado de alumno regular
-- Se otorga carnet con número de socio
+
+- Para que un alumno pueda asociarse debe presentar el DNI
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Asociación exitosa
-**Dado** que el alumno presenta DNI y certificado válidos,
-**Cuando** la bibliotecaria registra los datos,
-**Entonces** el sistema genera un número de socio y otorga el carnet.
+**Dado** que el alumno presenta DNI válido,
+**Cuando** la bibliotecaria procesa la asociación,
+**Entonces** el sistema otorga carnet con número de socio correspondiente.
 
 ---
 
@@ -536,13 +287,12 @@
 
 **ID:** Realizar préstamo
 
-**TÍTULO:** Como bibliotecaria quiero realizar un préstamo para que el socio pueda llevarse un libro.
+**TÍTULO:** Como bibliotecaria quiero realizar préstamos para que los socios puedan llevarse libros.
 
 **REGLAS DE NEGOCIO:**
-- Solo a socios habilitados
-- Máximo 3 préstamos vigentes por socio
-- No debe tener préstamos vencidos
-- El libro debe estar en buen estado
+
+- Los préstamos se realizan exclusivamente a socios habilitados, que no posean más de tres préstamos vigentes y no tengan préstamos vencidos
+- La bibliotecaria presta libros que se encuentren en buen estado
 
 **CRITERIOS DE ACEPTACIÓN:**
 
@@ -551,15 +301,20 @@
 **Cuando** solicita el préstamo,
 **Entonces** la bibliotecaria registra el préstamo y entrega el libro.
 
-**Escenario 2:** Préstamo rechazado por límite alcanzado
+**Escenario 2:** Préstamo rechazado por límite de préstamos
 **Dado** que el socio ya tiene 3 préstamos vigentes,
 **Cuando** solicita otro préstamo,
-**Entonces** el sistema informa que ha alcanzado el límite máximo.
+**Entonces** el sistema rechaza por haber alcanzado el límite máximo.
 
 **Escenario 3:** Préstamo rechazado por préstamos vencidos
 **Dado** que el socio tiene préstamos vencidos,
-**Cuando** solicita un nuevo préstamo,
-**Entonces** el sistema rechaza la solicitud por tener deudas pendientes.
+**Cuando** solicita un préstamo,
+**Entonces** el sistema rechaza por tener deudas pendientes.
+
+**Escenario 4:** Préstamo rechazado por libro deteriorado
+**Dado** que el libro solicitado se encuentra deteriorado,
+**Cuando** se intenta prestar,
+**Entonces** el sistema rechaza el préstamo por estado del libro.
 
 ---
 
@@ -567,264 +322,125 @@
 
 **ID:** Devolver libro
 
-**TÍTULO:** Como bibliotecaria quiero registrar la devolución de un libro para actualizar el estado del préstamo.
+**TÍTULO:** Como bibliotecaria quiero procesar devoluciones para actualizar el estado de los préstamos.
 
 **REGLAS DE NEGOCIO:**
-- Se verifica si el préstamo está vencido
-- Si está vencido, se suspende al socio por 15 días
+
+- Cuando el socio retorna un libro se verifica si el préstamo se encuentra vencido. En este caso, la bibliotecaria suspende al socio, que por 15 días no podrá solicitar nuevos préstamos
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Devolución en tiempo
 **Dado** que el préstamo no está vencido,
 **Cuando** el socio devuelve el libro,
-**Entonces** se registra la devolución exitosamente.
+**Entonces** el sistema registra la devolución exitosamente.
 
 **Escenario 2:** Devolución con vencimiento
 **Dado** que el préstamo está vencido,
 **Cuando** se devuelve el libro,
-**Entonces** el sistema registra la devolución y suspende al socio por 15 días.
+**Entonces** la bibliotecaria suspende al socio por 15 días y el socio no podrá solicitar nuevos préstamos durante ese período.
 
 ---
 
-## Problema 7: Mutual
+## Problema 5: Manejo de licencias
 
 ### Roles identificados:
-- **Persona** (solicitante de afiliación)
-- **Afiliado**
 
-### Historias de Usuario:
-
----
-
-#### Historia 1: Afiliar persona
-
-**ID:** Afiliar persona
-
-**TÍTULO:** Como persona quiero afiliarme a la mutual para acceder a las prestaciones.
-
-**REGLAS DE NEGOCIO:**
-- Debe poseer tarjeta de crédito para pago automático
-- Se otorga número de afiliado
-- Puede tener a cargo pareja e hijos menores de 18 años
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Afiliación exitosa
-**Dado** que la persona posee tarjeta de crédito válida,
-**Cuando** completa el proceso de afiliación,
-**Entonces** el sistema la registra como afiliada y le otorga un número de afiliado.
-
-**Escenario 2:** Afiliación rechazada por falta de tarjeta
-**Dado** que la persona no posee tarjeta de crédito,
-**Cuando** intenta afiliarse,
-**Entonces** el sistema rechaza la afiliación informando que requiere tarjeta de crédito.
-
----
-
-#### Historia 2: Solicitar prestación ortodoncia
-
-**ID:** Solicitar ortodoncia
-
-**TÍTULO:** Como afiliado quiero solicitar prestación de ortodoncia para mi tratamiento dental.
-
-**REGLAS DE NEGOCIO:**
-- Solo una por afiliado
-- Solo para menores de 15 años
-- Afiliado desde al menos 9 meses
-- Requiere historia clínica del profesional
-- Pago del mes anterior al día
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Solicitud aprobada
-**Dado** que el afiliado es menor de 15 años, está afiliado hace 10 meses, tiene el pago al día y presenta historia clínica,
-**Cuando** solicita la prestación,
-**Entonces** el sistema aprueba la solicitud de ortodoncia.
-
-**Escenario 2:** Solicitud rechazada por edad
-**Dado** que el afiliado tiene 16 años,
-**Cuando** solicita ortodoncia,
-**Entonces** el sistema rechaza la solicitud por superar el límite de edad.
-
-**Escenario 3:** Solicitud rechazada por antigüedad insuficiente
-**Dado** que el afiliado está afiliado hace 6 meses,
-**Cuando** solicita ortodoncia,
-**Entonces** el sistema rechaza por no cumplir los 9 meses de antigüedad.
-
----
-
-#### Historia 3: Solicitar prestación plantillas
-
-**ID:** Solicitar plantillas
-
-**TÍTULO:** Como afiliado quiero solicitar prestación de plantillas para mi tratamiento podológico.
-
-**REGLAS DE NEGOCIO:**
-- Hasta 2 por año calendario
-- Para cualquier afiliado
-- Requiere indicación profesional y factura
-- Pago del mes anterior al día
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Solicitud aprobada
-**Dado** que el afiliado no ha solicitado plantillas este año, tiene pago al día y presenta documentación requerida,
-**Cuando** solicita la prestación,
-**Entonces** el sistema aprueba la solicitud.
-
-**Escenario 2:** Solicitud rechazada por límite anual
-**Dado** que el afiliado ya solicitó 2 plantillas este año,
-**Cuando** solicita una tercera,
-**Entonces** el sistema rechaza por haber alcanzado el límite anual.
-
----
-
-## Problema 8: Teatro
-
-### Roles identificados:
 - **Empleado**
-- **Cliente**
-- **Vendedor de boletería**
-- **Administrador**
-
-### Historias de Usuario:
+- **Administrativo**
 
 ---
 
-#### Historia 1: Reservar entradas
+#### Historia 1: Solicitar licencia médica
 
-**ID:** Reservar entradas
+**ID:** Solicitar licencia
 
-**TÍTULO:** Como empleado quiero reservar entradas para clientes de forma gratuita.
+**TÍTULO:** Como empleado quiero solicitar una licencia médica para justificar mi reposo.
 
 **REGLAS DE NEGOCIO:**
-- Solo presencial en el teatro
-- Máximo 2 entradas por reserva
-- Caducan 3 horas antes del evento
-- Requiere datos de obra y espectador
+
+- Para poder solicitar una licencia el empleado debe tener más de 1 mes de antigüedad
+- Podrá solicitar una licencia un empleado que no tenga una licencia vigente
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Reserva exitosa
-**Dado** que hay disponibilidad para la función y el empleado está en el teatro,
-**Cuando** ingresa datos de la obra y del espectador para 2 entradas,
-**Entonces** el sistema registra la reserva con vencimiento 3 horas antes del evento.
+**Escenario 1:** Solicitud exitosa
+**Dado** que el empleado tiene más de 1 mes de antigüedad y no tiene licencia vigente,
+**Cuando** ingresa CUIL, tipo, fecha de inicio, matrícula médico, diagnóstico y destinatario,
+**Entonces** el sistema genera código de licencia y lo envía vía mail con confirmación y días otorgados.
 
-**Escenario 2:** Reserva rechazada por exceso de entradas
-**Dado** que se solicitan 3 entradas,
-**Cuando** el empleado intenta hacer la reserva,
-**Entonces** el sistema rechaza por exceder el límite de 2 entradas.
+**Escenario 2:** Solicitud rechazada por antigüedad insuficiente
+**Dado** que el empleado tiene menos de 1 mes de antigüedad,
+**Cuando** intenta solicitar licencia,
+**Entonces** el sistema informa rechazo de la licencia.
+
+**Escenario 3:** Solicitud rechazada por licencia vigente
+**Dado** que el empleado tiene una licencia vigente,
+**Cuando** intenta solicitar nueva licencia,
+**Entonces** el sistema rechaza la solicitud.
 
 ---
 
-#### Historia 2: Comprar entrada web
+#### Historia 2: Consultar licencias
 
-**ID:** Comprar entrada web
+**ID:** Consultar licencias
 
-**TÍTULO:** Como cliente quiero comprar entradas por web para asistir a una función.
+**TÍTULO:** Como administrativo quiero consultar licencias solicitadas para realizar seguimiento.
 
 **REGLAS DE NEGOCIO:**
-- Pago solo con tarjeta de crédito
-- Autorización a través del banco
-- Se emite código de compra para retiro
+
+- Por una cuestión de costos se podrá imprimir un informe por mes para cada empleado
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Compra exitosa
-**Dado** que hay disponibilidad y la tarjeta es válida,
-**Cuando** selecciona función, ingresa DNI, cantidad y realiza pago,
-**Entonces** el sistema procesa la compra y emite código para retiro en boletería.
+**Escenario 1:** Consulta exitosa
+**Dado** que no se imprimió informe este mes para el empleado,
+**Cuando** ingresa CUIL del empleado y rango de fechas,
+**Entonces** el sistema imprime informe de las licencias solicitadas.
 
-**Escenario 2:** Compra rechazada por tarjeta inválida
-**Dado** que la tarjeta no es autorizada por el banco,
-**Cuando** se intenta procesar el pago,
-**Entonces** el sistema rechaza la compra por problemas con la tarjeta.
-
----
-
-#### Historia 3: Retirar entradas con código
-
-**ID:** Retirar entradas código
-
-**TÍTULO:** Como vendedor de boletería quiero procesar códigos de compra para entregar las entradas correspondientes.
-
-**REGLAS DE NEGOCIO:**
-- Se requiere código válido
-- Se imprimen las entradas correspondientes
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Retiro exitoso
-**Dado** que el código "ABC123" es válido,
-**Cuando** el vendedor ingresa el código,
-**Entonces** el sistema verifica y imprime las entradas correspondientes.
-
-**Escenario 2:** Retiro rechazado por código inválido
-**Dado** que el código ingresado no existe,
-**Cuando** se intenta procesar,
-**Entonces** el sistema informa que el código no es válido.
+**Escenario 2:** Consulta rechazada por límite mensual
+**Dado** que ya se imprimió un informe este mes para el empleado,
+**Cuando** intenta imprimir otro,
+**Entonces** el sistema rechaza por límite de un informe mensual por empleado.
 
 ---
 
-#### Historia 4: Administrar programación
-
-**ID:** Administrar programación
-
-**TÍTULO:** Como administrador quiero gestionar la programación semanal para tener las obras disponibles para venta.
-
-**REGLAS DE NEGOCIO:**
-- Distribución semanal de obras en salas
-- Debe estar disponible para venta de entradas
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Programación exitosa
-**Dado** que el administrador tiene las obras y salas disponibles,
-**Cuando** configura la distribución semanal,
-**Entonces** el sistema actualiza la programación y la hace disponible para venta.
-
----
-
-## Problema 9: Pago Electrónico
+## Problema 6: Pago Electrónico
 
 ### Roles identificados:
-- **Empleado**
-- **Gerente**
-- **Cliente**
 
-### Historias de Usuario:
+- **Empleado/Gerente**
 
 ---
 
 #### Historia 1: Procesar pago de factura
 
-**ID:** Procesar pago factura
+**ID:** Procesar pago
 
-**TÍTULO:** Como empleado quiero procesar el pago de una factura para completar la transacción del cliente.
+**TÍTULO:** Como empleado quiero procesar el pago de una factura para completar la transacción.
 
 **REGLAS DE NEGOCIO:**
-- Se conecta con central de cobro con token
-- Si 2do vencimiento pasado: no se puede cobrar
-- Si 1er vencimiento pasado: se aplica recargo
-- Si no está vencida: monto original
+
+- Cuando el 2do vencimiento está vencido se debe informar que la factura no se puede cobrar
+- Cuando el 1er vencimiento está vencido hay que aplicar el recargo al monto original
+- Si la factura no está vencida, se cobra el monto original
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Pago exitoso sin vencimiento
-**Dado** que la factura no está vencida y el token es válido,
-**Cuando** el empleado ingresa el código de pago electrónico,
-**Entonces** el sistema recupera los datos y cobra el monto original.
+**Dado** que la factura no está vencida,
+**Cuando** ingresa el código de pago electrónico,
+**Entonces** el sistema se conecta con la central, recupera datos y cobra el monto original.
 
-**Escenario 2:** Pago con recargo por 1er vencimiento
-**Dado** que el 1er vencimiento está pasado pero no el 2do,
-**Cuando** se procesa el pago,
+**Escenario 2:** Pago con recargo por primer vencimiento
+**Dado** que el primer vencimiento está vencido pero no el segundo,
+**Cuando** procesa el pago,
 **Entonces** el sistema aplica el recargo al monto original.
 
-**Escenario 3:** Pago rechazado por 2do vencimiento
-**Dado** que el 2do vencimiento está pasado,
-**Cuando** se intenta cobrar,
-**Entonces** el sistema informa que no se puede cobrar por vencimiento.
+**Escenario 3:** Pago rechazado por segundo vencimiento
+**Dado** que el segundo vencimiento está vencido,
+**Cuando** intenta procesar el pago,
+**Entonces** el sistema informa que la factura no se puede cobrar por dicho motivo.
 
 ---
 
@@ -835,21 +451,20 @@
 **TÍTULO:** Como gerente quiero registrar en la central los pagos del día para mantener actualizada la información.
 
 **REGLAS DE NEGOCIO:**
-- Solo una vez al día
-- Requiere clave maestra
-- No se pueden enviar transacciones duplicadas
+
+- No deben enviarse dos veces las transacciones
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Registro exitoso
-**Dado** que la clave maestra es correcta y no se enviaron pagos hoy,
-**Cuando** el gerente solicita enviar los pagos del día,
-**Entonces** el sistema envía las transacciones y las marca como enviadas.
+**Dado** que la clave maestra es correcta y no se enviaron pagos del día,
+**Cuando** solicita registrar pagos del día,
+**Entonces** el sistema conecta a la central, envía transacciones y las marca como enviadas tras confirmación.
 
 **Escenario 2:** Registro rechazado por envío duplicado
 **Dado** que ya se enviaron los pagos del día,
-**Cuando** el gerente intenta enviarlos nuevamente,
-**Entonces** el sistema no permite el envío duplicado.
+**Cuando** intenta enviar segunda vez,
+**Entonces** el sistema no permite el envío.
 
 ---
 
@@ -860,132 +475,85 @@
 **TÍTULO:** Como gerente quiero ver estadísticas de cobros para analizar el rendimiento.
 
 **REGLAS DE NEGOCIO:**
-- Requiere clave maestra
-- Se agrupan por empresa
-- Se especifica rango de fechas
+
+- (No hay reglas explícitas en el enunciado)
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Estadísticas generadas exitosamente
-**Dado** que la clave es correcta y el rango de fechas es válido,
-**Cuando** el gerente solicita estadísticas,
-**Entonces** el sistema muestra montos y cantidad de cobros agrupados por empresa.
+**Dado** que la clave maestra es correcta,
+**Cuando** ingresa rango de fechas,
+**Entonces** el sistema muestra montos y cantidad de cobros realizados agrupando por empresa.
 
 ---
 
-## Problema 10: Un Aventón
+## Problema 7: Transferencias vehiculares
 
 ### Roles identificados:
-- **Usuario** (chofer/copiloto)
 
-### Historias de Usuario:
+- **Usuario registrado**
 
 ---
 
-#### Historia 1: Registrar usuario
+#### Historia 1: Iniciar trámite de transferencia
 
-**ID:** Registrar usuario
+**ID:** Iniciar trámite
 
-**TÍTULO:** Como persona quiero registrarme para poder usar el sistema de viajes compartidos.
+**TÍTULO:** Como usuario quiero iniciar un trámite de transferencia para transferir mi vehículo.
 
 **REGLAS DE NEGOCIO:**
-- No puede haber correos duplicados
-- Se requiere identificación correcta
+
+- Para que una transferencia se lleve a cabo con éxito, la patente ingresada no debe tener deudas y tanto el vendedor como el comprador deben ser mayores de 18 años
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Registro exitoso
-**Dado** que el correo "juan@email.com" no existe,
-**Cuando** ingresa usuario, correo y contraseña válidos,
-**Entonces** el sistema registra al usuario exitosamente.
+**Escenario 1:** Trámite iniciado exitosamente
+**Dado** que la patente no tiene deudas y vendedor y comprador son mayores de 18 años,
+**Cuando** ingresa patente, DNI vendedor y DNI comprador,
+**Entonces** el sistema envía al mail del comprador código para realizar el pago.
 
-**Escenario 2:** Registro rechazado por correo duplicado
-**Dado** que el correo ya existe,
-**Cuando** se intenta registrar,
-**Entonces** el sistema rechaza por correo duplicado.
+**Escenario 2:** Trámite rechazado por deudas
+**Dado** que la patente tiene deudas,
+**Cuando** intenta iniciar el trámite,
+**Entonces** el sistema informa el motivo del rechazo.
+
+**Escenario 3:** Trámite rechazado por menor de edad
+**Dado** que vendedor o comprador es menor de 18 años,
+**Cuando** intenta iniciar el trámite,
+**Entonces** el sistema informa el motivo del rechazo.
 
 ---
 
-#### Historia 2: Publicar viaje
+#### Historia 2: Consultar estado de transferencia
 
-**ID:** Publicar viaje
+**ID:** Consultar estado
 
-**TÍTULO:** Como usuario quiero publicar un viaje para compartir costos y encontrar acompañantes.
+**TÍTULO:** Como usuario quiero consultar el estado de una transferencia para conocer el progreso.
 
 **REGLAS DE NEGOCIO:**
-- Usuario debe estar autenticado
-- Los viajes no pueden superponerse
-- No puede publicar si adeuda calificaciones
+
+- Se pueden hacer hasta tres consultas por mes
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Publicación exitosa
-**Dado** que el usuario está autenticado, no tiene viajes superpuestos y no adeuda calificaciones,
-**Cuando** publica un viaje con fecha, hora y automóvil,
-**Entonces** el sistema registra el viaje y lo hace disponible.
+**Escenario 1:** Consulta exitosa
+**Dado** que no se alcanzó el límite de 3 consultas mensuales,
+**Cuando** ingresa una patente,
+**Entonces** el sistema informa el estado de la transferencia.
 
-**Escenario 2:** Publicación rechazada por superposición
-**Dado** que el usuario ya tiene un viaje en la misma fecha y hora,
-**Cuando** intenta publicar otro,
-**Entonces** el sistema rechaza por superposición de horarios.
-
-**Escenario 3:** Publicación rechazada por calificaciones pendientes
-**Dado** que el usuario adeuda calificaciones,
-**Cuando** intenta publicar,
-**Entonces** el sistema rechaza hasta completar las calificaciones pendientes.
+**Escenario 2:** Consulta rechazada por límite alcanzado
+**Dado** que ya se realizaron 3 consultas este mes,
+**Cuando** intenta consultar nuevamente,
+**Entonces** el sistema rechaza la consulta por límite mensual alcanzado.
 
 ---
 
-#### Historia 3: Postularse a viaje
-
-**ID:** Postularse viaje
-
-**TÍTULO:** Como usuario quiero postularme a un viaje para acompañar a otro conductor.
-
-**REGLAS DE NEGOCIO:**
-- Usuario debe estar autenticado
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Postulación exitosa
-**Dado** que el usuario está autenticado y el viaje está disponible,
-**Cuando** se postula al viaje,
-**Entonces** el sistema registra la postulación para que el chofer la evalúe.
-
----
-
-#### Historia 4: Calificar usuarios
-
-**ID:** Calificar usuarios
-
-**TÍTULO:** Como usuario quiero calificar a otros usuarios para mantener el sistema de reputaciones.
-
-**REGLAS DE NEGOCIO:**
-- Solo después de viaje terminado
-- Piloto califica copilotos y viceversa
-- Calificación positiva suma 1 punto, negativa resta 1
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Calificación exitosa
-**Dado** que el viaje terminó y el usuario participó,
-**Cuando** califica positivamente a otro usuario,
-**Entonces** el sistema suma 1 punto de reputación al calificado.
-
-**Escenario 2:** Calificación negativa
-**Dado** que el viaje terminó,
-**Cuando** califica negativamente,
-**Entonces** el sistema resta 1 punto de reputación.
-
----
-
-## Problema 11: Concursos
+## Problema 8: Concursos
 
 ### Roles identificados:
+
 - **Docente**
 - **Jefe del área de concursos**
-
-### Historias de Usuario:
 
 ---
 
@@ -993,24 +561,29 @@
 
 **ID:** Registrar docente
 
-**TÍTULO:** Como docente quiero registrarme para poder inscribirme a concursos.
+**TÍTULO:** Como docente quiero registrarme para inscribirme a concursos.
 
 **REGLAS DE NEGOCIO:**
-- Mail debe ser único (será nombre de usuario)
-- DNI debe estar entre 12 y 55 millones
-- Sistema envía contraseña automática por mail
+
+- El mail debe ser único y será utilizado como nombre de usuario
+- Los dni permitidos para concursar son aquellos menores a 55 millones y mayores a 12 millones
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Registro exitoso
-**Dado** que el DNI 30123456 está en rango válido y el mail no existe,
-**Cuando** el docente completa registro con datos válidos,
-**Entonces** el sistema lo registra y envía contraseña por mail.
+**Dado** que el DNI está entre 12 y 55 millones y el mail es único,
+**Cuando** completa DNI, nombre, apellido y mail,
+**Entonces** el sistema manda a la casilla de correo la contraseña asignada automáticamente.
 
-**Escenario 2:** Registro rechazado por DNI inválido
-**Dado** que el DNI ingresado es 60000000,
+**Escenario 2:** Registro rechazado por DNI fuera de rango
+**Dado** que el DNI no está entre 12 y 55 millones,
 **Cuando** intenta registrarse,
-**Entonces** el sistema rechaza por DNI fuera del rango permitido.
+**Entonces** el sistema rechaza el registro.
+
+**Escenario 3:** Registro rechazado por mail existente
+**Dado** que el mail ya existe en el sistema,
+**Cuando** intenta registrarse,
+**Entonces** el sistema rechaza por mail duplicado.
 
 ---
 
@@ -1018,350 +591,149 @@
 
 **ID:** Inscribirse concurso
 
-**TÍTULO:** Como docente quiero inscribirme a un concurso para participar en el proceso de selección.
+**TÍTULO:** Como docente quiero inscribirme a un concurso para participar en la selección.
 
 **REGLAS DE NEGOCIO:**
-- Máximo 3 concursos por docente
-- Debe estar autenticado
-- Se imprime comprobante
+
+- El docente no podrá inscribirse a más de 3 concursos
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Inscripción exitosa
-**Dado** que el docente está autenticado y tiene menos de 3 inscripciones,
-**Cuando** selecciona una materia y se inscribe,
-**Entonces** el sistema registra la inscripción e imprime comprobante.
+**Dado** que el docente tiene menos de 3 inscripciones,
+**Cuando** selecciona materia y acepta la inscripción,
+**Entonces** el sistema imprime comprobante.
 
-**Escenario 2:** Inscripción rechazada por límite
+**Escenario 2:** Inscripción rechazada por límite alcanzado
 **Dado** que el docente ya está inscripto en 3 concursos,
 **Cuando** intenta inscribirse a otro,
-**Entonces** el sistema rechaza por exceder el límite.
+**Entonces** el sistema rechaza por límite de 3 concursos.
 
 ---
 
-#### Historia 3: Imprimir listado inscriptos
+#### Historia 3: Imprimir listado de inscriptos
 
-**ID:** Imprimir listado inscriptos
+**ID:** Imprimir listado
 
 **TÍTULO:** Como jefe del área quiero imprimir listado de inscriptos para enviarlo al secretario administrativo.
 
 **REGLAS DE NEGOCIO:**
-- Requiere autenticación del jefe
-- Se filtra por materia específica
+
+- (No hay reglas explícitas en el enunciado)
 
 **CRITERIOS DE ACEPTACIÓN:**
 
-**Escenario 1:** Listado generado exitosamente
-**Dado** que el jefe está autenticado y hay inscriptos en la materia,
-**Cuando** solicita el listado de una materia específica,
-**Entonces** el sistema genera e imprime el listado de inscriptos.
+**Escenario 1:** Listado impreso exitosamente
+**Dado** que hay inscriptos en la materia seleccionada,
+**Cuando** el jefe solicita el listado de una materia,
+**Entonces** el sistema imprime listado con los inscriptos para envío al secretario administrativo.
 
 ---
 
-## Problema 12: Créditos bancarios
+## Problema 9: Créditos bancarios
 
 ### Roles identificados:
-- **Cliente**
-- **Gerente del banco**
 
-### Historias de Usuario:
+- **Cliente**
+- **Gerente**
 
 ---
 
 #### Historia 1: Iniciar trámite de crédito
 
-**ID:** Iniciar trámite crédito
+**ID:** Iniciar trámite
 
 **TÍTULO:** Como cliente quiero iniciar un trámite de crédito para solicitar financiamiento.
 
 **REGLAS DE NEGOCIO:**
-- DNI debe corresponder a cliente del banco
-- Monto máximo $400.000
-- Si no es cliente: enviar instructivo por mail
-- Si excede monto: rechazar con mensaje específico
+
+- El sistema acepta el inicio de trámite si el dni ingresado corresponde a un cliente del banco y si el crédito solicitado no supera los $400.000
+- En caso de que no sea cliente del banco el sistema deberá enviar un correo electrónico al email ingresado con un instructivo para hacerse cliente
+- Si el monto supera los $400.000 el sistema rechaza el inicio de trámite
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Trámite iniciado exitosamente
-**Dado** que el DNI corresponde a un cliente y el monto es $350.000,
-**Cuando** completa los datos y solicita el crédito,
-**Entonces** el sistema acepta el trámite e imprime número de comprobante.
+**Dado** que el DNI corresponde a un cliente y el crédito no supera $400.000,
+**Cuando** completa los datos del trámite,
+**Entonces** el sistema almacena el trámite para análisis del área económica e imprime número de comprobante.
 
 **Escenario 2:** Rechazo por no ser cliente
-**Dado** que el DNI no corresponde a un cliente,
+**Dado** que el DNI no corresponde a un cliente del banco,
 **Cuando** intenta iniciar trámite,
-**Entonces** el sistema envía instructivo por mail para hacerse cliente.
+**Entonces** el sistema envía correo electrónico con instructivo para hacerse cliente.
 
 **Escenario 3:** Rechazo por monto excesivo
-**Dado** que el monto solicitado es $500.000,
-**Cuando** intenta enviar la solicitud,
+**Dado** que el crédito supera los $400.000,
+**Cuando** intenta iniciar trámite,
 **Entonces** el sistema muestra "El monto solicitado excede el límite permitido".
 
 ---
 
 #### Historia 2: Consultar estado de trámite
 
-**ID:** Consultar estado trámite
+**ID:** Consultar estado
 
-**TÍTULO:** Como cliente quiero consultar el estado de mi trámite para conocer el progreso.
+**TÍTULO:** Como cliente quiero consultar el estado de mi trámite para conocer su progreso.
 
 **REGLAS DE NEGOCIO:**
-- Se requiere número de comprobante válido
-- Tras 3 consultas inválidas se bloquea IP por 24 horas
+
+- Si el cliente ingresa tres veces un código inexistente el sistema bloquea la ip del cliente por 24 horas
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Consulta exitosa
 **Dado** que el número de comprobante es válido,
-**Cuando** el cliente consulta el estado,
-**Entonces** el sistema retorna informe con el estado actual.
+**Cuando** ingresa el número,
+**Entonces** el sistema retorna informe con el estado del trámite.
 
-**Escenario 2:** Consulta fallida por comprobante inválido
+**Escenario 2:** Consulta fallida por comprobante inexistente
 **Dado** que el comprobante no existe,
-**Cuando** se consulta,
+**Cuando** intenta consultar,
 **Entonces** el sistema muestra "trámite inexistente".
 
 **Escenario 3:** Bloqueo por consultas inválidas
-**Dado** que el cliente ingresó 3 códigos inexistentes,
+**Dado** que el cliente ingresó tres códigos inexistentes,
 **Cuando** intenta una cuarta consulta,
-**Entonces** el sistema bloquea la IP por 24 horas.
+**Entonces** el sistema bloquea la ip por 24 horas mostrando "Usted ha excedido el número de consultas inválidas".
 
 ---
 
 #### Historia 3: Listar créditos aprobados
 
-**ID:** Listar créditos aprobados
+**ID:** Listar créditos
 
-**TÍTULO:** Como gerente quiero obtener un listado de créditos aprobados para realizar seguimiento.
+**TÍTULO:** Como gerente quiero obtener listado de créditos aprobados para realizar seguimiento.
 
 **REGLAS DE NEGOCIO:**
-- Se especifica rango de fechas
-- Solo créditos aprobados
-- Fechas deben ser válidas
+
+- (No hay reglas explícitas en el enunciado)
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Listado generado exitosamente
-**Dado** que las fechas son válidas y hay créditos aprobados,
-**Cuando** el gerente solicita el listado,
-**Entonces** el sistema muestra los créditos aprobados en el rango.
+**Dado** que las fechas ingresadas son válidas y hay créditos aprobados,
+**Cuando** solicita el listado entre fechas,
+**Entonces** el sistema muestra listado con los créditos aprobados.
 
 **Escenario 2:** Listado vacío
-**Dado** que no hay créditos aprobados en las fechas,
-**Cuando** se solicita el listado,
+**Dado** que no hay créditos aprobados en las fechas ingresadas,
+**Cuando** solicita el listado,
 **Entonces** el sistema muestra "No hay créditos aprobados en las fechas ingresadas".
 
+**Escenario 3:** Listado rechazado por fechas inválidas
+**Dado** que las fechas ingresadas no son válidas,
+**Cuando** solicita el listado,
+**Entonces** el sistema muestra "las fechas ingresadas no son válidas".
+
 ---
 
-## Problema 13: Venta de libros
+## Problema 10: Manejo de canchas de tenis
 
 ### Roles identificados:
-- **Visitante**
+
+- **Persona**
 - **Usuario registrado**
-
-### Historias de Usuario:
-
----
-
-#### Historia 1: Registrar usuario (Paso 1)
-
-**ID:** Registrar usuario paso1
-
-**TÍTULO:** Como visitante quiero iniciar mi registro para poder comprar libros.
-
-**REGLAS DE NEGOCIO:**
-- Correo electrónico no debe existir en el sistema
-- Clave debe tener 6 caracteres
-- Sistema genera código de 16 dígitos y lo envía por correo
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Registro parcial exitoso
-**Dado** que el correo "juan@email.com" no existe en el sistema,
-**Cuando** ingresa nombre, apellido, DNI, correo válido y clave de 6 caracteres,
-**Entonces** el sistema lo registra parcialmente, genera código de 16 dígitos y lo envía por correo.
-
-**Escenario 2:** Registro rechazado por correo existente
-**Dado** que el correo ya existe en el sistema,
-**Cuando** intenta registrarse,
-**Entonces** el sistema rechaza el registro por correo duplicado.
-
-**Escenario 3:** Registro rechazado por clave corta
-**Dado** que la clave tiene menos de 6 caracteres,
-**Cuando** intenta registrarse,
-**Entonces** el sistema rechaza por clave insuficiente.
-
----
-
-#### Historia 2: Confirmar registro (Paso 2)
-
-**ID:** Confirmar registro
-
-**TÍTULO:** Como visitante quiero confirmar mi registro para completar el proceso de alta.
-
-**REGLAS DE NEGOCIO:**
-- Debe ingresar correo y código de 16 dígitos correcto
-- Solo tras confirmación queda registrado definitivamente
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Confirmación exitosa
-**Dado** que el correo y código de 16 dígitos coinciden con los enviados,
-**Cuando** ingresa los datos en la página de confirmación,
-**Entonces** el sistema lo registra definitivamente como usuario.
-
-**Escenario 2:** Confirmación fallida por datos incorrectos
-**Dado** que el código ingresado no coincide,
-**Cuando** intenta confirmar,
-**Entonces** el sistema rechaza la confirmación.
-
----
-
-#### Historia 3: Comprar libro
-
-**ID:** Comprar libro
-
-**TÍTULO:** Como usuario registrado quiero comprar un libro para descargarlo.
-
-**REGLAS DE NEGOCIO:**
-- Solo usuarios registrados pueden comprar
-- Nombre y apellido deben coincidir con titular de tarjeta
-- Sistema valida con servidor de tarjeta
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Compra exitosa
-**Dado** que el usuario está autenticado, ingresa ISBN válido y los datos de tarjeta coinciden,
-**Cuando** selecciona "Comprar" y completa el pago,
-**Entonces** el sistema procesa el pago y envía enlace de descarga por correo.
-
-**Escenario 2:** Compra rechazada por datos no coincidentes
-**Dado** que el nombre registrado no coincide con el titular de la tarjeta,
-**Cuando** intenta comprar,
-**Entonces** el sistema rechaza por datos inconsistentes.
-
----
-
-## Problema 14: Manejo de tarjetas de crédito
-
-### Roles identificados:
-- **Personal del área comercial**
-- **Gerente de sucursal**
-
-### Historias de Usuario:
-
----
-
-#### Historia 1: Autenticar usuario
-
-**ID:** Autenticar usuario
-
-**TÍTULO:** Como personal del banco quiero autenticarme para acceder a las funcionalidades del sistema.
-
-**REGLAS DE NEGOCIO:**
-- Credenciales son las mismas del sistema central del banco
-- Sistema central envía token de autenticación si son correctas
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Autenticación exitosa
-**Dado** que las credenciales son válidas en el sistema central,
-**Cuando** el usuario ingresa sus credenciales,
-**Entonces** el sistema central envía token válido y habilita funcionalidades.
-
-**Escenario 2:** Autenticación fallida
-**Dado** que las credenciales no son válidas,
-**Cuando** intenta autenticarse,
-**Entonces** el sistema central rechaza y no envía token.
-
----
-
-#### Historia 2: Dar de alta tarjeta
-
-**ID:** Dar alta tarjeta
-
-**TÍTULO:** Como personal del banco quiero dar de alta una tarjeta para que el cliente pueda usarla.
-
-**REGLAS DE NEGOCIO:**
-- La persona debe ser cliente del banco
-- No puede ser morosa en sistema SIVA
-- SIVA proporciona número de tarjeta nuevo
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Alta exitosa
-**Dado** que la persona es cliente, no es morosa en SIVA y los datos son válidos,
-**Cuando** el personal completa el alta con nombre, DNI, CUIT y tipo de tarjeta,
-**Entonces** SIVA confirma no morosidad, asigna número de tarjeta y el sistema registra el alta.
-
-**Escenario 2:** Alta rechazada por morosidad
-**Dado** que la persona es morosa según SIVA,
-**Cuando** se verifica en el sistema SIVA,
-**Entonces** el sistema rechaza el alta por morosidad.
-
-**Escenario 3:** Alta rechazada por no ser cliente
-**Dado** que la persona no es cliente del banco,
-**Cuando** se intenta dar de alta,
-**Entonces** el sistema rechaza por no ser cliente.
-
----
-
-#### Historia 3: Dar de baja tarjeta
-
-**ID:** Dar baja tarjeta
-
-**TÍTULO:** Como personal del banco quiero dar de baja una tarjeta para desactivarla.
-
-**REGLAS DE NEGOCIO:**
-- Se requiere número de tarjeta
-- Se elimina de base de datos del banco
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Baja exitosa
-**Dado** que el número de tarjeta existe en el sistema,
-**Cuando** el personal ingresa el número y confirma la baja,
-**Entonces** el sistema elimina la tarjeta de la base de datos.
-
-**Escenario 2:** Baja fallida por tarjeta inexistente
-**Dado** que el número de tarjeta no existe,
-**Cuando** se intenta dar de baja,
-**Entonces** el sistema informa que la tarjeta no existe.
-
----
-
-#### Historia 4: Listar operaciones por fechas
-
-**ID:** Listar operaciones fechas
-
-**TÍTULO:** Como gerente quiero obtener un listado de operaciones para realizar seguimiento.
-
-**REGLAS DE NEGOCIO:**
-- Solo el gerente puede acceder
-- No se permiten fechas futuras
-- Fecha inicio no puede ser mayor a fecha fin
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Listado generado exitosamente
-**Dado** que el gerente está autenticado y las fechas son válidas,
-**Cuando** solicita el listado entre fechas válidas,
-**Entonces** el sistema muestra el listado de operaciones del período.
-
-**Escenario 2:** Listado rechazado por fechas inválidas
-**Dado** que la fecha de inicio es mayor a la fecha fin,
-**Cuando** intenta generar el listado,
-**Entonces** el sistema rechaza por rango de fechas inválido.
-
----
-
-## Problema 15: Manejo de canchas de tenis
-
-### Roles identificados:
-- **Persona** (interesada en registrarse)
-- **Usuario registrado**
-
-### Historias de Usuario:
 
 ---
 
@@ -1369,24 +741,23 @@
 
 **ID:** Registrar persona
 
-**TÍTULO:** Como persona quiero registrarme para poder solicitar turnos en canchas de tenis.
+**TÍTULO:** Como persona quiero registrarme para solicitar turnos en canchas.
 
 **REGLAS DE NEGOCIO:**
-- Solo mayores de 18 años
-- Mail será usado como nombre de usuario
-- Sistema genera contraseña automática
+
+- Solo quiere que se registren personas mayores de edad (18 años o más)
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Registro exitoso
-**Dado** que la persona tiene 25 años y el mail no existe,
-**Cuando** completa registro con datos válidos,
-**Entonces** el sistema la registra y envía contraseña generada por mail.
+**Dado** que la persona tiene 18 años o más,
+**Cuando** completa el registro con datos válidos,
+**Entonces** el sistema genera contraseña y la envía al correo ingresado.
 
 **Escenario 2:** Registro rechazado por menor de edad
-**Dado** que la persona tiene 17 años,
+**Dado** que la persona tiene menos de 18 años,
 **Cuando** intenta registrarse,
-**Entonces** el sistema rechaza por ser menor de edad.
+**Entonces** el sistema rechaza el registro por ser menor de edad.
 
 ---
 
@@ -1397,258 +768,59 @@
 **TÍTULO:** Como usuario quiero solicitar un turno para usar una cancha de tenis.
 
 **REGLAS DE NEGOCIO:**
-- Usuario debe estar autenticado
-- Cuenta se bloquea tras 3 fallos de inicio de sesión
-- No se permite turno con menos de 2 días de anticipación
+
+- Si un usuario falla tres veces al iniciar sesión su cuenta sea bloqueada
+- El sistema no debe permitir dar turno con menos de 2 días a la fecha en que se solicita
 
 **CRITERIOS DE ACEPTACIÓN:**
 
 **Escenario 1:** Turno asignado exitosamente
-**Dado** que la cancha está libre y la fecha es con más de 2 días de anticipación,
-**Cuando** el usuario solicita el turno,
-**Entonces** el sistema asigna el turno e informa "Su turno ha sido registrado con éxito".
+**Dado** que la cancha está libre y la fecha tiene más de 2 días de anticipación,
+**Cuando** ingresa cancha, fecha y hora,
+**Entonces** el sistema asigna el turno informando "Su turno ha sido registrado con éxito".
 
 **Escenario 2:** Turno rechazado por cancha ocupada
-**Dado** que la cancha está ocupada en el horario solicitado,
-**Cuando** intenta reservar,
-**Entonces** el sistema informa "Cancha ocupada, por favor seleccione otro día y horario".
+**Dado** que la cancha está ocupada en la fecha y hora solicitada,
+**Cuando** solicita el turno,
+**Entonces** el sistema informa "Cancha ocupada, por favor seleccione otro día y horario" y permite seleccionar nuevamente.
 
 **Escenario 3:** Turno rechazado por anticipación insuficiente
-**Dado** que la fecha solicitada es mañana,
+**Dado** que la fecha solicitada tiene menos de 2 días de anticipación,
 **Cuando** intenta solicitar el turno,
-**Entonces** el sistema rechaza por no cumplir los 2 días mínimos de anticipación.
+**Entonces** el sistema no permite dar el turno por no cumplir el mínimo de anticipación.
 
 **Escenario 4:** Cuenta bloqueada por fallos de sesión
-**Dado** que el usuario falló 3 veces al iniciar sesión,
+**Dado** que el usuario falló tres veces al iniciar sesión,
 **Cuando** intenta iniciar sesión nuevamente,
 **Entonces** el sistema bloquea la cuenta.
 
 ---
 
-## Problema 16: Procesamiento de imágenes
+## Resumen de correcciones aplicadas según criterios del profesor (apuntes tomados en clase):
 
-### Roles identificados:
-- **Operario**
-- **Supervisor**
+### ✅ **Reglas de negocio**: Solo las escritas textualmente en el enunciado
 
-### Historias de Usuario:
+- Si o si deben estar explicitamente en el enunciado
+- En caso de no estar en enunciado, debo considerarlo un escenario y es necesario controlar
 
----
+### ✅ **Títulos en primera persona**: Todos usan "quiero", "deseo" o "necesito"
 
-#### Historia 1: Autenticar operario
+- "Como X quiero Y para Z"
+- Enfoque en el beneficio personal del rol
 
-**ID:** Autenticar operario
+### ✅ **No validaciones como escenarios**
 
-**TÍTULO:** Como operario quiero autenticarme para acceder al sistema de procesamiento de imágenes.
+- No incluí validaciones de formato, campos requeridos, etc.
+- Me enfoqué en reglas de negocio y flujos funcionales
 
-**REGLAS DE NEGOCIO:**
-- Se conecta al sistema general del observatorio
-- Sistema retorna token si credenciales son correctas
+### ✅ **Una HU = Una funcionalidad**: Cada historia representa una función específica del sistema
 
-**CRITERIOS DE ACEPTACIÓN:**
+- Dar alta mobiliario = funcionalidad completa
+- Realizar reserva = funcionalidad completa
+- Pagar con tarjeta = funcionalidad completa
 
-**Escenario 1:** Autenticación exitosa
-**Dado** que las credenciales son válidas en el sistema del observatorio,
-**Cuando** el operario ingresa usuario y contraseña,
-**Entonces** el sistema retorna token y habilita funcionalidades.
+### ✅ **Responde las 3 preguntas clave**:
 
-**Escenario 2:** Autenticación fallida
-**Dado** que las credenciales no son válidas,
-**Cuando** intenta autenticarse,
-**Entonces** el sistema del observatorio rechaza el acceso.
-
----
-
-#### Historia 2: Cargar imagen
-
-**ID:** Cargar imagen
-
-**TÍTULO:** Como operario quiero cargar una imagen para poder procesarla.
-
-**REGLAS DE NEGOCIO:**
-- Operario debe estar autenticado
-- Imagen debe tener al menos 2 Megapixeles
-- Se puede visualizar en escala de grises o color
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Carga exitosa
-**Dado** que el operario está autenticado y selecciona imagen de 5 Megapixeles,
-**Cuando** carga la imagen,
-**Entonces** el sistema la acepta y ofrece opciones de visualización (grises/color).
-
-**Escenario 2:** Carga rechazada por resolución insuficiente
-**Dado** que la imagen seleccionada tiene 1.5 Megapixeles,
-**Cuando** intenta cargarla,
-**Entonces** el sistema rechaza por no cumplir el mínimo de 2 Megapixeles.
-
----
-
-#### Historia 3: Recortar áreas de interés
-
-**ID:** Recortar áreas
-
-**TÍTULO:** Como operario quiero recortar áreas de interés para extraer partes específicas de la imagen.
-
-**REGLAS DE NEGOCIO:**
-- Debe haber imagen cargada previamente
-- Máximo 4 áreas por imagen
-- Las áreas no pueden superponerse
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Recorte exitoso
-**Dado** que hay imagen cargada y se seleccionan 3 áreas sin superposición,
-**Cuando** el operario marca las áreas y confirma,
-**Entonces** el sistema procesa y almacena los recortes en disco.
-
-**Escenario 2:** Recorte rechazado por superposición
-**Dado** que una nueva área se superpone con otra existente,
-**Cuando** intenta marcarla,
-**Entonces** el sistema notifica el error por superposición.
-
-**Escenario 3:** Recorte rechazado por límite alcanzado
-**Dado** que ya se recortaron 4 áreas,
-**Cuando** intenta recortar una quinta,
-**Entonces** el sistema rechaza por exceder el límite máximo.
-
----
-
-#### Historia 4: Listar imágenes procesadas
-
-**ID:** Listar imágenes procesadas
-
-**TÍTULO:** Como supervisor quiero ver un listado de imágenes procesadas para realizar seguimiento.
-
-**REGLAS DE NEGOCIO:**
-- Solo usuario supervisor puede acceder
-- Se filtra por rango de fechas
-- Máximo 20 imágenes por visualización
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Listado generado exitosamente
-**Dado** que el supervisor está autenticado y hay 15 imágenes procesadas en el rango,
-**Cuando** solicita el listado con fechas válidas,
-**Entonces** el sistema muestra las 15 imágenes una debajo de otra.
-
-**Escenario 2:** Listado limitado por máximo de visualización
-**Dado** que hay 25 imágenes procesadas en el rango,
-**Cuando** solicita el listado,
-**Entonces** el sistema muestra solo las primeras 20 imágenes por limitaciones de visualización.
-
-**Escenario 3:** Listado vacío
-**Dado** que no hay imágenes procesadas en el rango de fechas,
-**Cuando** solicita el listado,
-**Entonces** el sistema informa que no hay imágenes para mostrar.
-
----
-
-#### Historia 5: Cerrar sesión
-
-**ID:** Cerrar sesión
-
-**TÍTULO:** Como operario quiero cerrar sesión para finalizar el uso seguro del sistema.
-
-**REGLAS DE NEGOCIO:**
-- Usuario debe cerrar sesión al terminar
-
-**CRITERIOS DE ACEPTACIÓN:**
-
-**Escenario 1:** Cierre de sesión exitoso
-**Dado** que el usuario está autenticado,
-**Cuando** solicita cerrar sesión,
-**Entonces** el sistema cierra la sesión y requiere nueva autenticación para acceder.
-
----
-
-## Resumen de Historias por Problema
-
-### Problema 1 - Alquiler de mobiliario:
-1. Dar alta mobiliario
-2. Realizar reserva de alquiler  
-3. Pagar con tarjeta
-
-### Problema 2 - Posgrado:
-1. Cargar carreras
-2. Registrar alumno
-3. Inscribir alumno a carrera
-
-### Problema 3 - Contratos:
-1. Confeccionar minuta
-2. Aprobar minuta
-3. Verificar CUIT con AFIP
-4. Imprimir listado de minutas aprobadas
-
-### Problema 4 - Venta de bebidas:
-1. Registrar usuario
-2. Realizar compra
-
-### Problema 5 - Casa de fotografía:
-1. Registrar cliente
-2. Subir fotos
-3. Pagar impresión
-4. Retirar fotos
-
-### Problema 6 - Biblioteca:
-1. Asociar alumno
-2. Realizar préstamo
-3. Devolver libro
-
-### Problema 7 - Mutual:
-1. Afiliar persona
-2. Solicitar prestación ortodoncia
-3. Solicitar prestación plantillas
-
-### Problema 8 - Teatro:
-1. Reservar entradas
-2. Comprar entrada web
-3. Retirar entradas con código
-4. Administrar programación
-
-### Problema 9 - Pago Electrónico:
-1. Procesar pago de factura
-2. Registrar pagos del día
-3. Ver estadísticas
-
-### Problema 10 - Un Aventón:
-1. Registrar usuario
-2. Publicar viaje
-3. Postularse a viaje
-4. Calificar usuarios
-
-### Problema 11 - Concursos:
-1. Registrar docente
-2. Inscribirse a concurso
-3. Imprimir listado inscriptos
-
-### Problema 12 - Créditos bancarios:
-1. Iniciar trámite de crédito
-2. Consultar estado de trámite
-3. Listar créditos aprobados
-
-### Problema 13 - Venta de libros:
-1. Registrar usuario (Paso 1)
-2. Confirmar registro (Paso 2)
-3. Comprar libro
-
-### Problema 14 - Manejo de tarjetas de crédito:
-1. Autenticar usuario
-2. Dar de alta tarjeta
-3. Dar de baja tarjeta
-4. Listar operaciones por fechas
-
-### Problema 15 - Manejo de canchas de tenis:
-1. Registrar persona
-2. Solicitar turno
-
-### Problema 16 - Procesamiento de imágenes:
-1. Autenticar operario
-2. Cargar imagen
-3. Recortar áreas de interés
-4. Listar imágenes procesadas
-5. Cerrar sesión
-
----
-
-**Total: 67 Historias de Usuario desarrolladas completamente con todos sus criterios de aceptación.**
+- **¿Quién se beneficia?** → Rol claramente identificado
+- **¿Qué se quiere?** → Acción específica en el título
+- **¿Cuál es el beneficio?** → Propósito claro en el "para"
