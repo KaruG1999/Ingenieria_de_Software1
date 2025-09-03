@@ -476,7 +476,8 @@
 
 **REGLAS DE NEGOCIO:**
 
-- (No hay reglas explícitas en el enunciado)
+- Requiere clave maestra
+- Requiere rango de fechas (Son validaciones?)
 
 **CRITERIOS DE ACEPTACIÓN:**
 
@@ -484,6 +485,12 @@
 **Dado** que la clave maestra es correcta,
 **Cuando** ingresa rango de fechas,
 **Entonces** el sistema muestra montos y cantidad de cobros realizados agrupando por empresa.
+
+**Escenario 2:** Falla en generar estadistica por clave  maestra erronea  (?)
+**Dado** que la clave maestra es incorrecta,
+**Cuando** ingresa rango de fechas,
+**Entonces** el sistema muestra montos y cantidad de cobros realizados agrupando por empresa.
+
 
 ---
 
@@ -824,3 +831,10 @@
 - **¿Quién se beneficia?** → Rol claramente identificado
 - **¿Qué se quiere?** → Acción específica en el título
 - **¿Cuál es el beneficio?** → Propósito claro en el "para"
+
+Consulta profe :
+
+dado: valor de verdad (info detallada)
+Entonces: no verificaciones / no validar 
+Recordar almacenar info en escenarios
+Pensar que el cliente debe equivocarse lo menos posible (generalizar rol y hacer más escenarios)
