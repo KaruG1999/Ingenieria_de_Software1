@@ -113,13 +113,3 @@ El **desarrollo centrado en el usuario** es un enfoque de diseño y desarrollo d
 4. **Incluir cursos alternos**: Considerar escenarios de error y excepciones
 5. **Usar lenguaje del dominio**: Emplear términos que entienda el cliente
 6. **Ser consistentes**: Mantener el mismo nivel de detalle en todos los casos de uso
-
-## Ejemplos Prácticos de Aplicación
-
-### Recordatorio de Ejemplos Vistos en Práctica
-
-**Actor "usuario" en Sokoban**: puede iniciar/terminar partida, mover jugador, reiniciar nivel.
-
-**Actor "sistema"**: cambia de nivel y carga niveles automáticamente.
-
-Estos ejemplos demuestran cómo los actores pueden incluir tanto entidades humanas como sistemas automatizados que interactúan con el software principal.
