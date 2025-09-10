@@ -211,3 +211,35 @@ Los **Casos de Uso** introducen un concepto importante que no aparece en las His
 **Postcondición**: El adelanto de una película fue reproducido
 
 Esta evolución muestra cómo una historia de usuario simple se convierte en un caso de uso detallado que especifica exactamente cómo debe comportarse el sistema.
+
+**Apunte Clase**
+
+- Quién interactúa con el sistema directamente 
+- Caso uso -> funcionalidad 
+- Reacción del sistema ante ese usuario 
+- Diagrama / dibujo -> muestra relación de interacciones 
+- Escenario 
+
+--
+
+- Se pueden usar planillas en parcial
+
+- Precondicion distinto a reglas de negocio de hu
+- Postcondición fin de acción 
+- Actor no necesariamente es una persona (servidor externo, funcion automatizada, tiempo)
+- Un caso de uso por planilla (escenario)
+- Si dos actores interactuan con el mismo caso de uso, hay que llevarlo a que sea un otro unico actor de manera generalizada
+(!!! dos actores NUNCA activan el mismo caso de uso)
+- Linea: no hay activacion / comunicacion con orden, solo interactúa (ej pagar tarjeta - servidor)
+- Flecha: si hay activación (quién da el primer paso/acción determina direccion) -> ej: Tiempo -> 
+- Relaciones exclusivo de casos de uso -> extend, uses 
+- Extend: solo usado en un caso de uso (sigue el sentido de paso : pagar tarjeta -> ver pelicula)
+- Uses: se usa solo cuando hay mas de dos en el mismo caso de uso 
+- Extend -> "el sistema ejecuta el caso de uso" 
+- Curso alterno: Qué pasa al final (que termina o puede volver a accion/paso X)
+- Acciones: puede arrancar tanto como por el usuario, como por el sistema (1er paso en pagar con tarj es de parte de sistema)
+- En la practica se trata de asociar mayormente casos alternos con acciones del sistema 
+- Acciones de sistema, especificar que datos pide (ej dni, nombre), no ser ambiguo -> accion de actor es "completar campos requeridos"
+- Verificar varias cosas -> verificar en acciones separadas (ej: verificar correo unico, verificar dni mayor edad)
+- Dicho lo anterior por cada accion de verificacion deberia tener un curso alterno escrito (ej: ya existe correo) con cartel en lo posible
+- Las condiciones de inicio de sesion (el usuario esta registrado) NO son precondición -> verificaciones de parte de sistema 
