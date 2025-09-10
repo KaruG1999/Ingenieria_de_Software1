@@ -1,24 +1,51 @@
 # Ingeniería de Software I - Casos de Uso
+
 ## Apunte Teórico
+
+### De Historias de Usuario a Casos de Uso
+
+#### La Evolución del Análisis de Requerimientos
+
+Los **Casos de Uso** son la evolución natural de las **Historias de Usuario** en el proceso de análisis de requerimientos:
+
+- **Historias de Usuario**: Capturan el "¿qué?" y "¿para qué?" desde la perspectiva del usuario
+- **Casos de Uso**: Detallan el "¿cómo?" a través de interacciones específicas entre actores y sistema
+
+#### Del Formato Ágil al Detalle Técnico
+
+**Historia de Usuario**:
+
+> "Como usuario registrado, quiero reproducir películas para disfrutar del contenido completo"
+
+**Se transforma en Caso de Uso**:
+
+- **Actor**: Usuario Registrado
+- **Precondiciones**: Usuario autenticado
+- **Curso Normal**: Secuencia detallada de pasos
+- **Cursos Alternos**: Manejo de excepciones (película exclusiva, falta de pago)
 
 ### Definiciones Fundamentales
 
 #### ¿Qué son los Casos de Uso?
-Los **Casos de Uso** representan un proceso de modelado del problema en términos de los eventos que interactúan entre los usuarios y el sistema. Es una técnica fundamental en el desarrollo centrado en el usuario.
+
+Los **Casos de Uso** representan un proceso de modelado del problema en términos de los eventos que interactúan entre los usuarios y el sistema. Es una técnica fundamental en el desarrollo centrado en el usuario que **profundiza y detalla** las necesidades expresadas inicialmente en las Historias de Usuario.
 
 #### Desarrollo Centrado en el Usuario
+
 El **desarrollo centrado en el usuario** es un enfoque de diseño y desarrollo de software que pone las necesidades, comportamientos y experiencias del usuario final en el centro del proceso de desarrollo. Se enfoca en entender cómo los usuarios interactúan con el sistema para crear soluciones que satisfagan sus necesidades reales.
 
 ### Elementos Principales
 
 #### Actor
+
 - **Definición**: Toda entidad que interactúa directamente con el sistema
-- **Características**: 
+- **Características**:
   - Puede ser una persona, otro sistema o una entidad externa
   - Se representa con un ícono de figura humana en el diagrama
   - No forma parte del sistema, sino que interactúa con él
 
 #### Caso de Uso
+
 - **Definición**: Representa una funcionalidad en términos de la interacción del usuario
 - **Características**:
   - Se representa con una elipse
@@ -26,48 +53,64 @@ El **desarrollo centrado en el usuario** es un enfoque de diseño y desarrollo d
   - Describe una funcionalidad específica del sistema
 
 #### Diagrama de Casos de Uso
+
 - **Definición**: Ilustra las relaciones entre los Casos de Uso y los actores
 - **Propósito**: Proporcionar una vista general de las funcionalidades del sistema y sus interacciones
 
 #### Escenarios
+
 - **Definición**: Descripción detallada de cada Caso de Uso para llevar a cabo la funcionalidad
 - **Propósito**: Especificar paso a paso cómo se ejecuta cada caso de uso
 
 ### Proceso de Modelado
 
-1. **Identificar los actores**
+1. **Partir de las Historias de Usuario**
+
+   - Revisar las historias de usuario identificadas
+   - Agrupar historias relacionadas
+
+2. **Identificar los actores**
+
    - Buscar todas las entidades que interactúan con el sistema
    - Considerar personas, sistemas externos, dispositivos
+   - Incluir actores especiales como "Tiempo"
 
-2. **Identificar los casos de uso**
+3. **Identificar los casos de uso**
+
    - Determinar las funcionalidades que debe proveer el sistema
+   - Descomponer historias de usuario complejas
    - Nombrarlos con verbos descriptivos
 
-3. **Construir el diagrama**
+4. **Construir el diagrama**
+
    - Relacionar actores con casos de uso
    - Establecer relaciones entre casos de uso
 
-4. **Realizar los escenarios**
+5. **Realizar los escenarios**
    - Describir detalladamente cada caso de uso
 
 ### Relaciones en el Diagrama
 
 #### Relación de Asociación
+
 - **Descripción**: Conexión simple entre actor y caso de uso
 - **Representación**: Línea continua
 - **Uso**: Cuando un actor participa en un caso de uso
 
 #### Relación de Extensión (<<extend>>)
+
 - **Descripción**: Un caso de uso extiende a otro bajo ciertas condiciones
 - **Representación**: Flecha punteada con etiqueta <<extend>>
 - **Uso**: Para funcionalidades opcionales o condicionales
 
 #### Relación de Inclusión (<<include>> o <<uses>>)
+
 - **Descripción**: Un caso de uso incluye obligatoriamente a otro
 - **Representación**: Flecha punteada con etiqueta <<include>>
 - **Uso**: Para funcionalidades comunes reutilizables
 
 #### Relación de Herencia
+
 - **Descripción**: Especialización entre actores o casos de uso
 - **Representación**: Flecha continua con punta triangular
 - **Uso**: Para mostrar jerarquías
@@ -84,7 +127,8 @@ El **desarrollo centrado en el usuario** es un enfoque de diseño y desarrollo d
 
 **Precondiciones**: Condición necesaria que se asume como verdadera antes de comenzar a ejecutar el CU. En general, es la postcondición de otro CU
 
-**Curso Normal**: 
+**Curso Normal**:
+
 - Secuencia de pasos numerada que reflejan la interacción entre el actor y el sistema
 - Se divide en dos columnas:
   - Acciones del Actor
@@ -93,6 +137,17 @@ El **desarrollo centrado en el usuario** es un enfoque de diseño y desarrollo d
 **Curso Alterno**: Pasos alternativos al curso normal. Pueden ser del actor o del sistema. Siempre se debe especificar si el CU termina o retoma a un paso del curso normal
 
 **Postcondición**: Condición relacionada con el sistema que se da por verdadera luego de ejecutado el curso normal
+
+### Actor Especial: Tiempo
+
+Los **Casos de Uso** introducen un concepto importante que no aparece en las Historias de Usuario: **el actor Tiempo**.
+
+- **Definición**: Representa procesos automáticos disparados por eventos temporales
+- **Características**:
+  - La interacción no es recíproca
+  - El tiempo actúa únicamente como disparador
+  - El sistema responde ejecutando un proceso automático
+- **Ejemplo**: "Publicar estrenos" que se ejecuta semanalmente
 
 ### Beneficios de Modelar con Casos de Uso
 
@@ -104,12 +159,55 @@ El **desarrollo centrado en el usuario** es un enfoque de diseño y desarrollo d
 6. **Planificación**: Ayuda en la estimación de esfuerzos y planificación del proyecto
 7. **Validación**: Permite validar requerimientos con los stakeholders
 8. **Trazabilidad**: Facilita el seguimiento desde requerimientos hasta implementación
+9. **Detalle técnico**: Proporciona el nivel de detalle necesario para el desarrollo
 
 ### Consejos para Escribir Buenos Casos de Uso
 
-1. **Nombrar con verbos**: Los casos de uso deben comenzar con un verbo (Ej: "Registrar usuario", "Procesar pago")
-2. **Ser específicos**: Evitar ambigüedades en las descripciones
-3. **Mantener granularidad adecuada**: No muy generales ni muy específicos
-4. **Incluir cursos alternos**: Considerar escenarios de error y excepciones
-5. **Usar lenguaje del dominio**: Emplear términos que entienda el cliente
-6. **Ser consistentes**: Mantener el mismo nivel de detalle en todos los casos de uso
+1. **Partir de historias de usuario validadas**: Usar las historias como base para asegurar valor de negocio
+2. **Nombrar con verbos**: Los casos de uso deben comenzar con un verbo (Ej: "Registrar usuario", "Procesar pago")
+3. **Ser específicos**: Evitar ambigüedades en las descripciones
+4. **Mantener granularidad adecuada**: No muy generales ni muy específicos
+5. **Incluir cursos alternos**: Considerar escenarios de error y excepciones
+6. **Usar lenguaje del dominio**: Emplear términos que entienda el cliente
+7. **Ser consistentes**: Mantener el mismo nivel de detalle en todos los casos de uso
+8. **Validar con usuarios**: Confirmar que los escenarios reflejan correctamente las necesidades
+
+### Cuándo Usar Cada Técnica
+
+#### Usar Historias de Usuario cuando:
+
+- Se necesita comunicación rápida con stakeholders
+- Se está en fases tempranas de análisis
+- Se trabaja con metodologías ágiles
+- Se requiere priorización por valor de negocio
+
+#### Usar Casos de Uso cuando:
+
+- Se necesita detalle técnico para el desarrollo
+- Se requiere documentación formal
+- Se deben especificar interacciones complejas
+- Se necesita base para casos de prueba detallados
+
+### Ejemplo de Evolución: Historia de Usuario → Caso de Uso
+
+**Historia de Usuario Original**:
+
+> "Como usuario visitante, quiero ver adelantos de películas para conocer el contenido antes de decidir registrarme"
+
+**Caso de Uso Resultante**:
+
+**Nombre**: Ver Adelanto  
+**Descripción**: Este caso de uso describe el evento en el que un usuario visualiza el adelanto de una película  
+**Actor**: Usuario Visitante  
+**Precondiciones**: ---
+
+**Curso Normal**:
+| Acciones del Actor | Acciones del Sistema |
+|-------------------|---------------------|
+| Paso 1: el usuario visitante selecciona la opción Ver adelanto | Paso 2: el sistema muestra un listado de los títulos de las películas de la semana |
+| Paso 3: el usuario visitante selecciona una de las películas de la lista | Paso 4: el sistema reproduce el adelanto seleccionado |
+
+**Curso Alterno**: ---  
+**Postcondición**: El adelanto de una película fue reproducido
+
+Esta evolución muestra cómo una historia de usuario simple se convierte en un caso de uso detallado que especifica exactamente cómo debe comportarse el sistema.
