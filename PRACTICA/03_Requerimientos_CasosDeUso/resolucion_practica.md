@@ -1,4 +1,4 @@
-# Ingeniería de Software I - 2024
+# Ingeniería de Software I - 2025
 # Resolución Práctica 3 – Casos de Uso
 
 ## Parte I: Definiciones generales
@@ -19,13 +19,15 @@ Los casos de uso son una técnica de modelado que representa las funcionalidades
 
 ### d) Relaciones en el diagrama de casos de uso
 
-**Asociación**: Línea continua que conecta un actor con un caso de uso, indicando que el actor participa en ese caso de uso.
+**Asociación / Uso (-)**: Línea continua que conecta un *actor* con un *caso de uso*, indicando que el actor participa en ese caso de uso.
 
-**Inclusión (<<include>>)**: Indica que un caso de uso incluye obligatoriamente la funcionalidad de otro caso de uso. Se utiliza para extraer funcionalidades comunes y reutilizables.
+**Inclusión / Uses (<<include>>)**: Indica que un caso de uso incluye obligatoriamente la funcionalidad de otro caso de uso. Se utiliza para extraer funcionalidades comunes y reutilizables. *Fecha desde quien incluye*
 
-**Extensión (<<extend>>)**: Indica que un caso de uso puede extender a otro bajo ciertas condiciones específicas. Se utiliza para funcionalidades opcionales o condicionales.
+**Extensión (<<extend>>)**: Indica que un caso de uso puede extender a otro bajo ciertas condiciones específicas (implicito). Se utiliza para funcionalidades opcionales o condicionales. *Flecha hacia quien extiende*
 
-**Herencia**: Indica una relación de especialización entre actores o entre casos de uso, donde uno es una versión más específica del otro.
+**Herencia / Generalización (->)**: Indica una relación de especialización entre actores o entre casos de uso, donde uno es una versión más específica del otro.
+
+![Elementos de diagrama](../../TEORIA/img/elementosCU.png)
 
 ### e) Beneficios de modelar requerimientos con casos de uso
 
