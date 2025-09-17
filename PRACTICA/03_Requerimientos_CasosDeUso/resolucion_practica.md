@@ -66,11 +66,14 @@ Los casos de uso son una técnica de modelado que representa las funcionalidades
 (Realizar reserva de alquiler) <<include>> (Procesar pago con tarjeta)
 ```
 
-#### Escenario: Dar de alta mobiliario
+## 1) Escenario: Dar de alta mobiliario
 
-**Nombre del caso de uso**: Dar de alta mobiliario
+**Nombre del caso de uso**: Dar de alta mobiliario.
+
 **Descripción**: Este caso de uso describe el proceso mediante el cual el encargado registra nuevo mobiliario en el sistema.
+
 **Actores**: Encargado de mobiliario
+
 **Precondiciones**: El encargado debe estar autenticado en el sistema.
 
 **Curso Normal**:
@@ -87,11 +90,65 @@ Paso alternativo 4: El código de inventario ya existe. Se informa el error y se
 
 **Postcondición**: El mobiliario queda registrado en el sistema y disponible para alquiler.
 
-#### Escenario: Realizar reserva de alquiler
+
+## 2) Escenario: Autenticarse
+
+**Nombre del caso de uso**: Autenticarse  
+
+**Descripción**: El encargado de mobiliario se autentica para acceder al sistema.  
+
+**Actores**: Encargado de mobiliario  
+
+**Precondiciones**: El encargado posee usuario y contraseña válidos.  
+
+**Curso Normal:**
+
+| Acciones del Actor | Acciones del Sistema |
+|-------------------|---------------------|
+| Paso 1: El encargado ingresa usuario y contraseña | Paso 2: El sistema verifica credenciales |
+| | Paso 3: El sistema valida que las credenciales sean correctas 
+|| Paso 4: El sistema muestra mensaje de acceso exitoso |
+
+**Curso Alterno:**
+
+ Paso alternativo 3: Usuario o contraseña incorrectos -> Se informa el error y se solicita reingresar credenciales -> Retoma en Paso 1
+
+**Postcondición:** El encargado queda autenticado en el sistema.
+
+
+## 3) Escenario: Procesar pago de reserva
+
+**Nombre del caso de uso**: Procesar pago de reserva  
+
+**Descripción**: El cliente paga el 20% de la reserva mediante tarjeta de crédito.  
+
+**Actores**: Cliente, Banco  
+
+**Precondiciones**: El cliente inició el proceso de reserva.  
+
+**Curso Normal:**
+
+| Acciones del Actor | Acciones del Sistema |
+|-------------------|---------------------|
+| Paso 1: El cliente ingresa datos de tarjeta | Paso 2: El sistema envía datos al Banco |
+| Paso 3: El Banco valida número de tarjeta y fondos | Paso 4: El sistema registra pago exitoso |
+| Paso 5: El sistema genera número único de reserva | Paso 6: Se confirma pago al cliente |
+
+**Curso Alterno:**
+
+Paso alternativo 3: Tarjeta inválida o sin fondos | Se informa el error y se solicita otro medio de pago. Retoma en Paso 1 |
+
+**Postcondición:** Reserva confirmada y número de reserva emitido.
+
+
+## 4) Escenario: Realizar reserva de alquiler
 
 **Nombre del caso de uso**: Realizar reserva de alquiler
+
 **Descripción**: Permite a un cliente realizar una reserva de alquiler de mobiliario.
+
 **Actores**: Cliente
+
 **Precondiciones**: Debe haber al menos 3 muebles disponibles en el sistema.
 
 **Curso Normal**:
@@ -110,6 +167,30 @@ Paso alternativo 6: Se seleccionaron menos de 3 muebles. Se informa el error y s
 Paso alternativo 8: El pago no se procesa correctamente. Se cancela la reserva. Fin del caso de uso.
 
 **Postcondición**: La reserva queda registrada en el sistema con un número único asignado.
+
+## 5) Escenario: Validar datos bancarios
+
+**Nombre del caso de uso**: Valida datos  
+
+**Descripción**: El banco valida los datos de la tarjeta ingresados por el cliente  
+
+**Actores**: Cliente, Banco  
+
+**Precondiciones**: El cliente inició el proceso de reserva.  
+
+**Curso Normal:**
+
+| Acciones del Actor | Acciones del Sistema |
+|-------------------|---------------------|
+| Paso 1: El cliente ingresa datos de tarjeta | Paso 2: El sistema envía datos al Banco |
+| Paso 3: El Banco valida número de tarjeta y fondos | Paso 4: El sistema registra pago exitoso |
+| Paso 5: El sistema genera número único de reserva | Paso 6: Se confirma pago al cliente |
+
+**Curso Alterno:**
+
+Paso alternativo 3: Tarjeta inválida o sin fondos | Se informa el error y se solicita otro medio de pago. Retoma en Paso 1 |
+
+**Postcondición:** Reserva confirmada y número de reserva emitido.
 
 ### 2. Posgrado
 
