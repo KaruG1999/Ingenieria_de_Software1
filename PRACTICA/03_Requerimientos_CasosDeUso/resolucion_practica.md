@@ -207,11 +207,14 @@ Paso alternativo 3: Tarjeta inválida o sin fondos | Se informa el error y se so
 - Procesar pago con tarjeta
 - Imprimir comprobantes
 
-#### Escenario: Registrar alumno
+## Escenario: Registrar alumno
 
 **Nombre del caso de uso**: Registrar alumno
+
 **Descripción**: Permite a una persona registrarse como alumno en el sistema.
+
 **Actores**: Alumno
+
 **Precondiciones**: ---
 
 **Curso Normal**:
@@ -229,7 +232,7 @@ Paso alternativo 5: La contraseña tiene 6 dígitos o menos. Se informa el error
 
 **Postcondición**: El alumno queda registrado en el sistema.
 
-#### Escenario: Inscribirse a carrera
+## Escenario: Inscribirse a carrera
 
 **Nombre del caso de uso**: Inscribirse a carrera
 **Descripción**: Permite a un alumno registrado inscribirse a una carrera de posgrado.
@@ -266,11 +269,14 @@ Paso alternativo 8: El pago falla. Se cancela la inscripción. Fin del caso de u
 - Validar CUIT en AFIP
 - Imprimir listado de personal contratado
 
-#### Escenario: Confeccionar minuta
+## Escenario: Confeccionar minuta
 
 **Nombre del caso de uso**: Confeccionar minuta
+
 **Descripción**: Permite al empleado de mesa de entradas crear una nueva minuta de contrato.
+
 **Actores**: Empleado de mesa de entradas
+
 **Precondiciones**: ---
 
 **Curso Normal**:
@@ -289,7 +295,7 @@ Paso alternativo 5: La duración supera 6 meses. Se informa el error y se solici
 
 **Postcondición**: La minuta queda registrada en estado pendiente de aprobación.
 
-#### Escenario: Aprobar minuta
+## Escenario: Aprobar minuta
 
 **Nombre del caso de uso**: Aprobar minuta
 **Descripción**: Permite al empleado de rendiciones aprobar una minuta previamente confeccionada.
@@ -325,11 +331,14 @@ Paso alternativo 6: El CUIT está inhabilitado. Se informa y no se permite la ap
 - Generar listado de materiales
 - Actualizar monto por material
 
-#### Escenario: Reciclar material
+## Escenario: Reciclar material
 
 **Nombre del caso de uso**: Reciclar material
+
 **Descripción**: Permite a una persona reciclar materiales y obtener el pago correspondiente.
+
 **Actores**: Persona
+
 **Precondiciones**: La máquina debe estar operativa.
 
 **Curso Normal**:
