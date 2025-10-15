@@ -135,3 +135,9 @@ Se presiona botón <inicio> [temperatura es 0 o puerta abierta] / emitir pitido 
 ## Recordatorio Final
 
 > El DTE debe ser **claro, completo y consistente**. Cada transición debe estar justificada y cada estado debe tener al menos una forma de salida (excepto estados finales).
+
+
+#### Apunte de clase 
+
+- Apagado no se modeliza como estado 
+- Evaluar limites -> el sistema debe reaccionar "avisa" 
