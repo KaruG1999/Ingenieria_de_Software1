@@ -4,34 +4,58 @@
 
 **Checklist aplicado para mejorar las historias de usuario:**
 
-* **Dado:** debe contener valores de verdad concretos (ej: nombre, DNI, email, usuario registrado, materia seleccionada).
-* **Cuando:** describe la acción que realiza el usuario en el sistema.
-* **Entonces:** no debe expresar verificaciones lógicas, sino **lo que el sistema muestra, genera o hace visible**.
-* Siempre que se **almacene información** (registro, inscripción, listado), debe quedar explícito en el escenario.
-* El diseño debe minimizar los errores del cliente → pensar escenarios con posibles equivocaciones y mensajes claros.
-* Generalizar el rol cuando aplique (ej: "usuario del sistema" en lugar de separar docente/jefe si la acción es común).
-* Si hay **registro y autenticación**, deben existir HU para:
-   1. Registro.
-   2. Inicio de sesión.
-   3. Cierre de sesión.
+- **Dado:** debe contener valores de verdad concretos (ej: nombre, DNI, email, usuario registrado, materia seleccionada).
+- **Cuando:** describe la acción que realiza el usuario en el sistema.
+- **Entonces:** no debe expresar verificaciones lógicas, sino **lo que el sistema muestra, genera o hace visible**.
+- Siempre que se **almacene información** (registro, inscripción, listado), debe quedar explícito en el escenario.
+- El diseño debe minimizar los errores del cliente → pensar escenarios con posibles equivocaciones y mensajes claros.
+- Generalizar el rol cuando aplique (ej: "usuario del sistema" en lugar de separar docente/jefe si la acción es común).
+- Si hay **registro y autenticación**, deben existir HU para:
+  1.  Registro.
+  2.  Inicio de sesión.
+  3.  Cierre de sesión.
 
 ---
 
 ## Problema 1: Alquiler de mobiliario
 
 ### Roles identificados:
-- **Encargado de mobiliario**
+
+- **Encargado de mobiliario** -> Usuario de carga
 - **Cliente**
 
 ---
 
-#### Historia 1: Dar alta mobiliario
+#### Historia 1: Autenticación
+
+**ID:** Iniciar sesión
+
+**TÍTULO:** Como usuario de carga quiero autenticarme en el sistema para administrar el alta de mobiliario.
+
+**REGLAS DE NEGOCIO:**
+
+- Solo los usuarios de carga habilitados pueden acceder a funcionidad de alta de mobiliario
+
+**CRITERIOS DE ACEPTACIÓN:**
+
+**Escenario 1:** Inicio de sesión exitoso
+**Dado** que el encargado está registrado y su usuario y contraseña pertenecen a un usuario habilitado
+**Cuando** ingresa email "encargqgmail.com", contraseña "abc123" confirma el inicio de sesión,
+**Entonces** el sistema muestra en pantalla el panel de alta de mobiliario.
+
+**Escenario 2:** Inicio de sesión fallido por correo invalido
+**Dado** que el encargado está registrado pero ingresa un email que no pertenece a un usuario habilitado y contraseña,
+**Cuando** ingresa email "luis@gmail.com", contraseña "abc123" y confirma el inico de sesion,
+**Entonces** el sistema muestra el mensaje "Inicio de sesion fallido: email invalido".
+
+#### Historia 2: Dar alta mobiliario
 
 **ID:** Dar alta mobiliario
 
 **TÍTULO:** Como encargado de mobiliario quiero dar de alta un mueble para incluirlo en el inventario disponible.
 
 **REGLAS DE NEGOCIO:**
+
 - No pueden existir códigos repetidos
 - Para que el encargado pueda dar de alta el mobiliario debe autenticarse en el sistema
 
@@ -49,13 +73,14 @@
 
 ---
 
-#### Historia 2: Realizar reserva de alquiler
+#### Historia 3: Realizar reserva de alquiler
 
 **ID:** Realizar reserva alquiler
 
 **TÍTULO:** Como cliente quiero realizar una reserva de alquiler para asegurar mobiliario para mi evento.
 
 **REGLAS DE NEGOCIO:**
+
 - Por una política comercial de la marca una reserva tiene que incluir como mínimo 3 muebles
 - Para realizar una reserva se debe abonar el 20% del total del alquiler
 
@@ -67,24 +92,25 @@
 **Entonces** el sistema almacena la reserva, procesa el pago, emite número de reserva único "R123456" y muestra el mensaje "Reserva confirmada. Su número de reserva es R123456".
 
 **Escenario 2:** Reserva fallida por cantidad insuficiente de muebles
-**Dado** que el cliente selecciona solo 2 muebles (2 sillas a $50 cada una),
-**Cuando** ingresa fecha "15/03/2024", lugar "Salón Central", cantidad de días "2" e intenta realizar la reserva,
+**Dado** que el cliente desea alquilar solo 2 muebles y las condiciones depago son válidas,
+**Cuando** selecciona 2 muebles (2 sillas a $50 cada una), ingresa fecha "15/03/2024", lugar "Salón Central", cantidad de días "2" e intenta realizar la reserva,
 **Entonces** el sistema muestra el mensaje "Debe seleccionar al menos 3 muebles para realizar la reserva".
 
 **Escenario 3:** Reserva fallida por error en pago
-**Dado** que el cliente selecciona 4 muebles válidos pero las condiciones de pago no son exitosas,
-**Cuando** intenta realizar el pago del 20% con una tarjeta sin fondos suficientes,
+**Dado** que el hay mobiliario disponible pero las condiciones de pago no son exitosas,
+**Cuando** ingresa los datos requeridos correctamente e intenta realizar el pago del 20% con una tarjeta sin fondos suficientes,
 **Entonces** el sistema muestra el mensaje "Error en el procesamiento del pago. Verifique los datos de su tarjeta".
 
 ---
 
-#### Historia 3: Pagar con tarjeta de crédito
+#### Historia 4: Pagar con tarjeta de crédito
 
 **ID:** Pagar tarjeta
 
 **TÍTULO:** Como cliente quiero pagar con tarjeta de crédito para completar mi reserva.
 
 **REGLAS DE NEGOCIO:**
+
 - El pago de la reserva se realiza únicamente con tarjeta de crédito validando número de tarjeta y fondos a través de un servicio del banco
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -104,11 +130,17 @@
 **Cuando** el cliente intenta realizar el pago de $70,
 **Entonces** el sistema muestra el mensaje "Fondos insuficientes en la tarjeta".
 
+**Escenario 4:** Pago fallido por fallo conexión con el servidor externo del banco
+**Dada** la conexión con el servidor del banco fallida,
+**Cuando** el cliente intenta realizar el pago ingresando los datos y presiona "pagar"
+**Entonces** el sistema retorna el mensaje "Error por conexión con servidor".
+
 ---
 
 ## Problema 2: Cadena hotelera
 
 ### Roles identificados:
+
 - **Usuario**
 - **Conserje**
 
@@ -121,6 +153,7 @@
 **TÍTULO:** Como usuario quiero reservar un hospedaje para asegurar mi estadía.
 
 **REGLAS DE NEGOCIO:**
+
 - La fecha de ingreso debe estar dentro de los 90 días a partir de la fecha actual
 - Las estadías no pueden durar más de 15 días
 
@@ -150,6 +183,7 @@
 **TÍTULO:** Como usuario quiero hacer check in para acceder a mi habitación.
 
 **REGLAS DE NEGOCIO:**
+
 - Los check in pueden realizarse después de las 10 am y hasta las 23:59 pm
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -178,6 +212,7 @@
 **TÍTULO:** Como conserje quiero realizar el check out para liberar la habitación.
 
 **REGLAS DE NEGOCIO:**
+
 - Solo se puede realizar check out de habitaciones sin gastos
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -197,6 +232,7 @@
 ## Problema 3: Venta de bebidas
 
 ### Roles identificados:
+
 - **Persona**
 - **Usuario registrado/premium**
 
@@ -209,6 +245,7 @@
 **TÍTULO:** Como persona quiero registrarme para poder comprar bebidas alcohólicas.
 
 **REGLAS DE NEGOCIO:**
+
 - Solo se permite que se registren al sitio personas mayores a 18 años
 - El mail será utilizado como nombre de usuario por lo tanto debe ser único
 
@@ -238,6 +275,7 @@
 **TÍTULO:** Como usuario registrado quiero iniciar sesión para acceder a la compra de bebidas.
 
 **REGLAS DE NEGOCIO:**
+
 - El inicio de sesión se realiza con email (usuario) y contraseña
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -261,6 +299,7 @@
 **TÍTULO:** Como usuario quiero comprar bebidas para adquirir productos alcohólicos.
 
 **REGLAS DE NEGOCIO:**
+
 - Si el usuario es premium se le hace un descuento del 20%
 - Si el usuario seleccionó productos por un monto superior a los $4500 se le hace un 10% de descuento
 - Si el usuario es premium y compra por un monto superior a $4500 se deben aplicar ambos descuentos
@@ -302,6 +341,7 @@
 ## Problema 4: Biblioteca
 
 ### Roles identificados:
+
 - **Bibliotecaria**
 - **Alumno/Socio**
 
@@ -314,6 +354,7 @@
 **TÍTULO:** Como bibliotecaria quiero asociar un alumno para que pueda solicitar préstamos.
 
 **REGLAS DE NEGOCIO:**
+
 - Para que un alumno pueda asociarse debe presentar el DNI
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -332,6 +373,7 @@
 **TÍTULO:** Como bibliotecaria quiero realizar préstamos para que los socios puedan llevarse libros.
 
 **REGLAS DE NEGOCIO:**
+
 - Los préstamos se realizan exclusivamente a socios habilitados, que no posean más de tres préstamos vigentes y no tengan préstamos vencidos
 - La bibliotecaria presta libros que se encuentren en buen estado
 
@@ -366,6 +408,7 @@
 **TÍTULO:** Como bibliotecaria quiero procesar devoluciones para actualizar el estado de los préstamos.
 
 **REGLAS DE NEGOCIO:**
+
 - Cuando el socio retorna un libro se verifica si el préstamo se encuentra vencido. En este caso, la bibliotecaria suspende al socio, que por 15 días no podrá solicitar nuevos préstamos
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -385,6 +428,7 @@
 ## Problema 5: Manejo de licencias
 
 ### Roles identificados:
+
 - **Empleado**
 - **Administrativo**
 
@@ -397,6 +441,7 @@
 **TÍTULO:** Como empleado quiero solicitar una licencia médica para justificar mi reposo.
 
 **REGLAS DE NEGOCIO:**
+
 - Para poder solicitar una licencia el empleado debe tener más de 1 mes de antigüedad
 - Podrá solicitar una licencia un empleado que no tenga una licencia vigente
 
@@ -426,6 +471,7 @@
 **TÍTULO:** Como administrativo quiero consultar licencias solicitadas para realizar seguimiento.
 
 **REGLAS DE NEGOCIO:**
+
 - Por una cuestión de costos se podrá imprimir un informe por mes para cada empleado
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -445,6 +491,7 @@
 ## Problema 6: Pago Electrónico
 
 ### Roles identificados:
+
 - **Empleado/Gerente**
 
 ---
@@ -456,6 +503,7 @@
 **TÍTULO:** Como empleado quiero procesar el pago de una factura para completar la transacción.
 
 **REGLAS DE NEGOCIO:**
+
 - Cuando el 2do vencimiento está vencido se debe informar que la factura no se puede cobrar
 - Cuando el 1er vencimiento está vencido hay que aplicar el recargo al monto original
 - Si la factura no está vencida, se cobra el monto original
@@ -486,6 +534,7 @@
 **TÍTULO:** Como gerente quiero registrar en la central los pagos del día para mantener actualizada la información.
 
 **REGLAS DE NEGOCIO:**
+
 - No deben enviarse dos veces las transacciones
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -509,6 +558,7 @@
 **TÍTULO:** Como gerente quiero ver estadísticas de cobros para analizar el rendimiento.
 
 **REGLAS DE NEGOCIO:**
+
 - Requiere clave maestra
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -528,6 +578,7 @@
 ## Problema 7: Transferencias vehiculares
 
 ### Roles identificados:
+
 - **Usuario registrado**
 
 ---
@@ -539,6 +590,7 @@
 **TÍTULO:** Como usuario quiero iniciar un trámite de transferencia para transferir mi vehículo.
 
 **REGLAS DE NEGOCIO:**
+
 - Para que una transferencia se lleve a cabo con éxito, la patente ingresada no debe tener deudas y tanto el vendedor como el comprador deben ser mayores de 18 años
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -567,6 +619,7 @@
 **TÍTULO:** Como usuario quiero consultar el estado de una transferencia para conocer el progreso.
 
 **REGLAS DE NEGOCIO:**
+
 - Se pueden hacer hasta tres consultas por mes
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -586,6 +639,7 @@
 ## Problema 8: Concursos
 
 ### Roles identificados:
+
 - **Docente**
 - **Jefe del área de concursos**
 
@@ -598,6 +652,7 @@
 **TÍTULO:** Como docente quiero poder inscribirme en el sistema para concursar por un puesto en mi cátedra correspondiente.
 
 **REGLAS DE NEGOCIO:**
+
 - El mail es único y utilizado como nombre de usuario
 - El sistema debe enviar automáticamente la contraseña generada al correo registrado
 - Solo pueden registrarse docentes con DNI mayor a 12 millones y menor a 55 millones
@@ -628,6 +683,7 @@
 **TÍTULO:** Como docente quiero inscribirme al concurso para poder ejercer en un puesto este cuatrimestre.
 
 **REGLAS DE NEGOCIO:**
+
 - Un docente no podrá inscribirse a más de 3 concursos
 - El sistema debe emitir un comprobante de inscripción detallado
 
@@ -652,6 +708,7 @@
 **TÍTULO:** Como jefe del área de concursos, quiero imprimir un listado de inscriptos en una materia para enviarlo al secretario administrativo, de manera que se cumpla con la ordenanza 123/19 de la UNLP.
 
 **REGLAS DE NEGOCIO:**
+
 - El listado debe poder ser impreso y elevado siguiendo el circuito administrativo de la ordenanza 123/19 (jefe de concursos → secretario administrativo → decano)
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -675,6 +732,7 @@
 **TÍTULO:** Como usuario del sistema (docente o jefe de área de concursos), quiero poder iniciar sesión para acceder a las funcionalidades disponibles según mi rol.
 
 **REGLAS DE NEGOCIO:**
+
 - El inicio de sesión se realiza con email (usuario) y contraseña
 - Cada rol (docente o jefe de concursos) tiene permisos específicos
 - Un usuario no podrá acceder a ninguna funcionalidad sin haber iniciado sesión previamente
@@ -705,6 +763,7 @@
 **TÍTULO:** Como usuario del sistema (docente o jefe de área de concursos), quiero poder cerrar sesión para finalizar mi acceso y proteger mis datos.
 
 **REGLAS DE NEGOCIO:**
+
 - El cierre de sesión finaliza la sesión activa del usuario
 - Una vez cerrada la sesión, no se puede acceder a funcionalidades sin volver a iniciar sesión
 
@@ -725,6 +784,7 @@
 ## Problema 9: Créditos bancarios
 
 ### Roles identificados:
+
 - **Cliente**
 - **Gerente**
 
@@ -737,6 +797,7 @@
 **TÍTULO:** Como cliente quiero iniciar un trámite de crédito para solicitar financiamiento.
 
 **REGLAS DE NEGOCIO:**
+
 - El sistema acepta el inicio de trámite si el dni ingresado corresponde a un cliente del banco y si el crédito solicitado no supera los $400.000
 - En caso de que no sea cliente del banco el sistema deberá enviar un correo electrónico al email ingresado con un instructivo para hacerse cliente
 - Si el monto supera los $400.000 el sistema rechaza el inicio de trámite
@@ -767,6 +828,7 @@
 **TÍTULO:** Como cliente quiero consultar el estado de mi trámite para conocer su progreso.
 
 **REGLAS DE NEGOCIO:**
+
 - Si el cliente ingresa tres veces un código inexistente el sistema bloquea la ip del cliente por 24 horas
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -816,6 +878,7 @@
 ## Problema 10: Manejo de canchas de tenis
 
 ### Roles identificados:
+
 - **Persona**
 - **Usuario registrado**
 
@@ -828,6 +891,7 @@
 **TÍTULO:** Como persona quiero registrarme para solicitar turnos en canchas.
 
 **REGLAS DE NEGOCIO:**
+
 - Solo quiere que se registren personas mayores de edad (18 años o más)
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -851,6 +915,7 @@
 **TÍTULO:** Como usuario registrado quiero iniciar sesión para solicitar turnos en canchas.
 
 **REGLAS DE NEGOCIO:**
+
 - Si un usuario falla tres veces al iniciar sesión su cuenta sea bloqueada
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -879,6 +944,7 @@
 **TÍTULO:** Como usuario quiero solicitar un turno para usar una cancha de tenis.
 
 **REGLAS DE NEGOCIO:**
+
 - El sistema no debe permitir dar turno con menos de 2 días a la fecha en que se solicita
 
 **CRITERIOS DE ACEPTACIÓN:**
@@ -923,6 +989,7 @@
 ## Resumen de mejoras aplicadas según criterios docente:
 
 ### ✅ **Valores concretos en "Dado":**
+
 - DNI específicos: "42.123.456", "38.765.432"
 - Nombres completos: "Juan Pérez", "María González"
 - Emails únicos: "carlos@email.com", "diego@email.com"
@@ -931,6 +998,7 @@
 - Códigos de ejemplo: "MOB001", "HOTEL789", "CRED001"
 
 ### ✅ **"Entonces" observables:**
+
 - Mensajes exactos mostrados al usuario
 - Registros almacenados en el sistema
 - Emails enviados con contenido específico
@@ -938,23 +1006,27 @@
 - Acciones visibles del sistema
 
 ### ✅ **Almacenamiento explícito:**
+
 - "el sistema almacena la reserva"
 - "el sistema registra el mueble en el inventario"
 - "el sistema almacena el trámite"
 - "el sistema registra al alumno"
 
 ### ✅ **HU completas de autenticación:**
+
 - Registro de usuario
 - Inicio de sesión
 - Cierre de sesión
 - Manejo de bloqueos por intentos fallidos
 
 ### ✅ **Escenarios de error con mensajes específicos:**
+
 - Códigos repetidos, fechas inválidas, fondos insuficientes
 - Mensajes de error claros y accionables
 - Validaciones de reglas de negocio explícitas
 
 ### ✅ **Reglas de negocio textuales:**
+
 - Solo las mencionadas explícitamente en los enunciados
 - No validaciones técnicas o de formato
 - Enfoque en lógica de negocio funcional
